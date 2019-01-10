@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import * as userService from '../services/user';
+// import * as userService from '../services/user';
 
 /**
  * Validate users login.
