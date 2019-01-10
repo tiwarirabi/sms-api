@@ -29,6 +29,7 @@ export function up(knex: Knex) {
       .integer('verified_by')
       .references('id')
       .inTable('users');
+    table.dateTime('verified_at');
     table
       .integer('created_by')
       .references('id')

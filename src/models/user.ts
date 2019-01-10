@@ -117,7 +117,7 @@ function mapUserToModel(obj: any): User{
         firstName: obj.creatorFirstName,
         middleName: obj.creatorMiddleName,
         lastName: obj.creatorLastName,
-        lastToggedIn: obj.creatorLastLoggedIn,
+        lastLoggedIn: obj.creatorLastLoggedIn,
         displayPicture: obj.creatorDisplayPicture,
         mobile: obj. creatorMobile,
       };
@@ -131,7 +131,7 @@ function mapUserToModel(obj: any): User{
         firstName: obj.updatorFirstName,
         middleName: obj.updatorMiddleName,
         lastName: obj.updatorLastName,
-        lastToggedIn: obj.updatorLastLoggedIn,
+        lastLoggedIn: obj.updatorLastLoggedIn,
         displayPicture: obj.updatorDisplayPicture,
         mobile: obj. updatorMobile,
       };

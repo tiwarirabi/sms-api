@@ -25,3 +25,27 @@ export async function validateAdmin(
     next(error);
   }
 }
+
+
+
+/**
+ * Validate admin Schema.
+ *
+ * @param  {Request}   req
+ * @param  {Response}   res
+ * @param  {NextFunction} next
+ * @returns {Promise}
+ */
+export async function validateAdminSchema(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    //const admin = req.body;
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+}

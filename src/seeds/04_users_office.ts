@@ -21,6 +21,7 @@ export function seed(knex: Knex) {
       is_verified: 1,
       remarks: "Barista and Bar Training Center",
       verified_by: 4,
+      verified_at: new Date(),
       created_by: 2,
     },
     {

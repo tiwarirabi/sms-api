@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 
-import * as userService from '../services/user';
+import * as officeService from '../services/office';
 
 /**
- * Validate users existence.
+ * Validate office existence.
  *
  * @param  {Request}   req
  * @param  {Response}   res
  * @param  {NextFunction} next
  * @returns {Promise}
  */
-export async function validateUser(
+export async function validateOffice(
   req: Request,
   res: Response,
   next: NextFunction
@@ -18,7 +18,7 @@ export async function validateUser(
   try {
     const id = req.params.id;
 
-    await userService.fetchById(id);
+    await officeService.fetchById(id);
 
     next();
   } catch (error) {
@@ -26,21 +26,22 @@ export async function validateUser(
   }
 }
 
+
 /**
- * Validate user Schema.
+ * Validate office Schema.
  *
  * @param  {Request}   req
  * @param  {Response}   res
  * @param  {NextFunction} next
  * @returns {Promise}
  */
-export async function validateUserSchema(
+export async function validateOfficeSchema(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    //const user = req.body;
+    //const office = req.body;
 
     next();
   } catch (error) {

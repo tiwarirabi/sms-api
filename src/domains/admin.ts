@@ -4,8 +4,9 @@ export interface Admin{
     id: number;
     role: string;
     user: User;
-    createdBy?: User;
-    createdAt?: Date;
+    createdBy: User;
+    createdAt: Date;
+    
     updatedBy?: User;
     updatedAt?: Date;
 }

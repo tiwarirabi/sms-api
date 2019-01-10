@@ -35,3 +35,45 @@ export async function fetchById(
     throw error;
   }
 }
+
+/**
+ * Save a user.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ */
+export async function save(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const user = await userService.save(req.body);
+
+    res.json(user);
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ * Update a user.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ */
+export async function update(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const user = await userService.update(req.params.id, req.body);
+
+    res.json(user);
+  } catch (error) {
+    throw error;
+  }
+}

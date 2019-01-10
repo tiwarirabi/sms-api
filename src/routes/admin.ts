@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import * as admins from '../controllers/admins';
- import { validateAdmin } from '../validators/admin';
+ import { validateAdmin, validateAdminSchema } from '../validators/admin';
  import { validateUser } from '../validators/user';
 
 const router = Router();
@@ -21,5 +21,14 @@ router.get('/:id',validateAdmin, admins.fetchById);
  */
 router.get('/user/:id',validateUser, admins.fetchByUserId);
 
+/**
+ * POST /admins
+ */
+router.post('/',validateAdminSchema, admins.save);
+
+/**
+ * PUT /admins/:id
+ */
+router.put('/:id',validateAdmin, admins.update);
 
 export default router;

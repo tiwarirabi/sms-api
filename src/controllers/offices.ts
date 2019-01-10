@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import * as adminService from '../services/admin';
+import * as officeService from '../services/office';
 
 /**
  * Search using paams or fetch all if no params.
@@ -10,13 +10,13 @@ import * as adminService from '../services/admin';
  * @param {NextFunction} next
  */
 export async function fetchAll(req: Request, res: Response, next: NextFunction) {
-  const allAdmins = await adminService.fetchAll();
+  const allOffices = await officeService.fetchAll();
 
-  res.json(allAdmins);
+  res.json(allOffices);
 }
 
 /**
- * Fetch single admin using id.
+ * Fetch single office using id.
  *
  * @param {Request} req
  * @param {Response} res
@@ -28,17 +28,17 @@ export async function fetchById(
   next: NextFunction
 ) {
   try {
-    const admin = await adminService.fetchById(req.params.id);
+    const office = await officeService.fetchById(req.params.id);
 
-    res.json(admin);
+    res.json(office);
   } catch (error) {
-    next(error);
+    throw error;
   }
 }
 
 
 /**
- * Fetch single admin using user id.
+ * Fetch single office using user id.
  *
  * @param {Request} req
  * @param {Response} res
@@ -50,18 +50,17 @@ export async function fetchByUserId(
     next: NextFunction
   ) {
     try {
-      const admin = await adminService.fetchByUserId(req.params.id);
+      const office = await officeService.fetchByUserId(req.params.id);
   
-      res.json(admin);
+      res.json(office);
     } catch (error) {
       throw error;
     }
   }
   
 
-
-    /**
- * Save a admin.
+  /**
+ * Save a office.
  *
  * @param {Request} req
  * @param {Response} res
@@ -73,16 +72,16 @@ export async function save(
   next: NextFunction
 ) {
   try {
-    const admin = await adminService.save(req.body);
+    const office = await officeService.save(req.body);
 
-    res.json(admin);
+    res.json(office);
   } catch (error) {
     throw error;
   }
 }
 
 /**
- * Update a admin.
+ * Update a office.
  *
  * @param {Request} req
  * @param {Response} res
@@ -94,9 +93,9 @@ export async function update(
   next: NextFunction
 ) {
   try {
-    const admin = await adminService.update(req.params.id, req.body);
+    const office = await officeService.update(req.params.id, req.body);
 
-    res.json(admin);
+    res.json(office);
   } catch (error) {
     throw error;
   }

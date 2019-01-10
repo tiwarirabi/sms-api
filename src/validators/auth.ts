@@ -3,22 +3,22 @@ import { Request, Response, NextFunction } from 'express';
 import * as userService from '../services/user';
 
 /**
- * Validate users existence.
+ * Validate users login.
  *
  * @param  {Request}   req
  * @param  {Response}   res
  * @param  {NextFunction} next
  * @returns {Promise}
  */
-export async function validateUser(
+export async function validateLogin(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    const id = req.params.id;
 
-    await userService.fetchById(id);
+    // const email = req.body.email;
+    // await userService.fetchById(id);
 
     next();
   } catch (error) {
@@ -27,20 +27,21 @@ export async function validateUser(
 }
 
 /**
- * Validate user Schema.
+ * Validate user token.
  *
  * @param  {Request}   req
  * @param  {Response}   res
  * @param  {NextFunction} next
  * @returns {Promise}
  */
-export async function validateUserSchema(
+export async function validateToken(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    //const user = req.body;
+    
+    //const token = req.body;
 
     next();
   } catch (error) {

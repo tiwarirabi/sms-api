@@ -91,7 +91,7 @@ export async function fetchByUserId(
           'user.middle_name as userMiddleName',
           'user.last_name as userLastName',
           'user.mobile as userMobile',
-          'user.display_picture as userDispayPicture',
+          'user.display_picture as userDisplayPicture',
           'user.last_logged_in as userLastLoggedIn',
   
           'creator.id as creatorId',
@@ -157,9 +157,10 @@ export function remove(id: number, tx?: Knex) {
     .delete();
 }
 
-
-
-
+/**
+ * Map an object to Admin interface type.
+ * @param {Any} obj 
+ */
 function mapAdminToModel(obj: any): Admin{
   const admin: Admin = {
        ...objectUtil.withOnlyAttrs(obj,[
@@ -175,8 +176,8 @@ function mapAdminToModel(obj: any): Admin{
       firstName: obj.userFirstName,
       middleName: obj.userMiddleName,
       lastName: obj.userLastName,
-      lastToggedIn: obj.userLastLoggedIn,
-      displayPicture: obj.userDisplayPicture,
+      lastLoggedIn: obj.userLastLoggedIn,
+      displayPicture: obj.userDisplayPicture ? obj.userDisplayPicture  : null ,
       mobile: obj.userMobile,
     };
   }
@@ -189,7 +190,7 @@ function mapAdminToModel(obj: any): Admin{
         firstName: obj.creatorFirstName,
         middleName: obj.creatorMiddleName,
         lastName: obj.creatorLastName,
-        lastToggedIn: obj.creatorLastLoggedIn,
+        lastLoggedIn: obj.creatorLastLoggedIn,
         displayPicture: obj.creatorDisplayPicture,
         mobile: obj. creatorMobile,
       };
@@ -203,7 +204,7 @@ function mapAdminToModel(obj: any): Admin{
         firstName: obj.updatorFirstName,
         middleName: obj.updatorMiddleName,
         lastName: obj.updatorLastName,
-        lastToggedIn: obj.updatorLastLoggedIn,
+        lastLoggedIn: obj.updatorLastLoggedIn,
         displayPicture: obj.updatorDisplayPicture,
         mobile: obj. updatorMobile,
       };

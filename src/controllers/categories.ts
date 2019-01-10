@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import * as adminService from '../services/admin';
+import * as categoryService from '../services/category';
 
 /**
  * Search using paams or fetch all if no params.
@@ -10,13 +10,13 @@ import * as adminService from '../services/admin';
  * @param {NextFunction} next
  */
 export async function fetchAll(req: Request, res: Response, next: NextFunction) {
-  const allAdmins = await adminService.fetchAll();
+  const allCategories = await categoryService.fetchAll();
 
-  res.json(allAdmins);
+  res.json(allCategories);
 }
 
 /**
- * Fetch single admin using id.
+ * Fetch single category using id.
  *
  * @param {Request} req
  * @param {Response} res
@@ -28,40 +28,17 @@ export async function fetchById(
   next: NextFunction
 ) {
   try {
-    const admin = await adminService.fetchById(req.params.id);
+    const category = await categoryService.fetchById(req.params.id);
 
-    res.json(admin);
+    res.json(category);
   } catch (error) {
-    next(error);
+    throw error;
   }
 }
 
 
-/**
- * Fetch single admin using user id.
- *
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- */
-export async function fetchByUserId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    try {
-      const admin = await adminService.fetchByUserId(req.params.id);
-  
-      res.json(admin);
-    } catch (error) {
-      throw error;
-    }
-  }
-  
-
-
-    /**
- * Save a admin.
+  /**
+ * Save a category.
  *
  * @param {Request} req
  * @param {Response} res
@@ -73,16 +50,16 @@ export async function save(
   next: NextFunction
 ) {
   try {
-    const admin = await adminService.save(req.body);
+    const category = await categoryService.save(req.body);
 
-    res.json(admin);
+    res.json(category);
   } catch (error) {
     throw error;
   }
 }
 
 /**
- * Update a admin.
+ * Update a category.
  *
  * @param {Request} req
  * @param {Response} res
@@ -94,9 +71,9 @@ export async function update(
   next: NextFunction
 ) {
   try {
-    const admin = await adminService.update(req.params.id, req.body);
+    const category = await categoryService.update(req.params.id, req.body);
 
-    res.json(admin);
+    res.json(category);
   } catch (error) {
     throw error;
   }

@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 
-import * as userService from '../services/user';
+import * as employeeService from '../services/employee';
 
 /**
- * Validate users existence.
+ * Validate employee existence.
  *
  * @param  {Request}   req
  * @param  {Response}   res
  * @param  {NextFunction} next
  * @returns {Promise}
  */
-export async function validateUser(
+export async function validateEmployee(
   req: Request,
   res: Response,
   next: NextFunction
@@ -18,7 +18,7 @@ export async function validateUser(
   try {
     const id = req.params.id;
 
-    await userService.fetchById(id);
+    await employeeService.fetchById(id);
 
     next();
   } catch (error) {
@@ -26,21 +26,23 @@ export async function validateUser(
   }
 }
 
+
+
 /**
- * Validate user Schema.
+ * Validate employee Schema.
  *
  * @param  {Request}   req
  * @param  {Response}   res
  * @param  {NextFunction} next
  * @returns {Promise}
  */
-export async function validateUserSchema(
+export async function validateEmployeeSchema(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    //const user = req.body;
+    //const employee = req.body;
 
     next();
   } catch (error) {

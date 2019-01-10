@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import * as adminService from '../services/admin';
+import * as foodService from '../services/food';
 
 /**
  * Search using paams or fetch all if no params.
@@ -10,13 +10,13 @@ import * as adminService from '../services/admin';
  * @param {NextFunction} next
  */
 export async function fetchAll(req: Request, res: Response, next: NextFunction) {
-  const allAdmins = await adminService.fetchAll();
+  const allFoods = await foodService.fetchAll();
 
-  res.json(allAdmins);
+  res.json(allFoods);
 }
 
 /**
- * Fetch single admin using id.
+ * Fetch single food using id.
  *
  * @param {Request} req
  * @param {Response} res
@@ -28,40 +28,38 @@ export async function fetchById(
   next: NextFunction
 ) {
   try {
-    const admin = await adminService.fetchById(req.params.id);
+    const food = await foodService.fetchById(req.params.id);
 
-    res.json(admin);
+    res.json(food);
   } catch (error) {
-    next(error);
+    throw error;
   }
 }
 
 
 /**
- * Fetch single admin using user id.
+ * Fetch single food using category id.
  *
  * @param {Request} req
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function fetchByUserId(
+export async function fetchByCategoryId(
     req: Request,
     res: Response,
     next: NextFunction
   ) {
     try {
-      const admin = await adminService.fetchByUserId(req.params.id);
+      const food = await foodService.fetchByCategoryId(req.params.id);
   
-      res.json(admin);
+      res.json(food);
     } catch (error) {
       throw error;
     }
   }
-  
 
-
-    /**
- * Save a admin.
+/**
+ * Save a food.
  *
  * @param {Request} req
  * @param {Response} res
@@ -73,16 +71,16 @@ export async function save(
   next: NextFunction
 ) {
   try {
-    const admin = await adminService.save(req.body);
+    const food = await foodService.save(req.body);
 
-    res.json(admin);
+    res.json(food);
   } catch (error) {
     throw error;
   }
 }
 
 /**
- * Update a admin.
+ * Update a food.
  *
  * @param {Request} req
  * @param {Response} res
@@ -94,9 +92,9 @@ export async function update(
   next: NextFunction
 ) {
   try {
-    const admin = await adminService.update(req.params.id, req.body);
+    const food = await foodService.update(req.params.id, req.body);
 
-    res.json(admin);
+    res.json(food);
   } catch (error) {
     throw error;
   }

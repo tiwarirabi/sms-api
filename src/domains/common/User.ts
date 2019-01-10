@@ -7,7 +7,8 @@ export interface User {
   lastName: string;
   mobile: string;
   displayPicture: string;
-  lastToggedIn: Date;
+  lastLoggedIn: Date;
+  
   emailVerificationCode?: string;
   mobileVerificationCode?: string;
   createdBy?: User;
