@@ -16,6 +16,19 @@ export async function fetchAll(): Promise<Array<User>> {
 }
 
 /**
+ * Search Users with params.
+ */
+export async function search(params: any): Promise<Array<User>> {
+  
+    try {
+
+        return await userModel.search(params);
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+/**
  * Fetch by Id.
  */
 export async function fetchById(userId: number): Promise<User> {

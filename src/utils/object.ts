@@ -59,15 +59,15 @@ export function difference(list1: any[], list2: any[], key: string = 'id') {
   };
 }
 
-/**
- * Make objects value into camelCase.
- *
- * @param {Object} obj
- * @returns {Object}
- */
-export function toCamelCase(obj: any) {
-  return camelCase(obj);
-}
+  /**
+   * Make objects value into camelCase.
+   *
+   * @param {Object} obj
+   * @returns {Object}
+   */
+  export function toCamelCase(obj: any) {
+    return camelCase(obj);
+  }
 
 /**
  * Make objects value into snake_case.

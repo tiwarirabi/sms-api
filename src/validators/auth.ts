@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 
-// import * as userService from '../services/user';
+import * as userService from '../services/user';
+import AuthError from '../errors/AuthError';
+import { AuthRequest } from '../domains/request/AuthRequest';
 
 /**
  * Validate users login.
@@ -17,10 +19,17 @@ export async function validateLogin(
 ) {
   try {
 
-    // const email = req.body.email;
-    // await userService.fetchById(id);
+    const email = req.body.email;
+    const password = req.body.password;
 
-    next();
+    const [user] = await userService.search({email,password});
+    if(user) {
+      (req as AuthRequest).user = user; 
+      next();
+
+    }
+    next(new AuthError("Username/Password mismatch."));
+
   } catch (error) {
     next(error);
   }

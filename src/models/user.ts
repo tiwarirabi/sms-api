@@ -6,6 +6,41 @@ import * as objectUtil from '../utils/object';
 
 const USER_TABLE = 'users';
 
+const USER_SELECT_VALUES =[
+  'user.id as id',
+  'user.email as email',
+  'user.type as type',
+  'user.first_name as firstName',
+  'user.middle_name as middleName',
+  'user.last_name as lastName',
+  'user.mobile as mobile',
+  'user.display_picture as dispayPicture',
+  'user.last_logged_in as lastLoggedIn',
+  'user.created_at as createdAt',
+  'user.updated_at as updatedAt',
+
+  'creator.id as creatorId',
+  'creator.email as creatorEmail',
+  'creator.type as creatorType',
+  'creator.first_name as creatorFirstName',
+  'creator.middle_name as creatorMiddleName',
+  'creator.last_name as creatorLastName',
+  'creator.mobile as creatorMobile',
+  'creator.display_picture as creatorDispayPicture',
+  'creator.last_logged_in as creatorLastLoggedIn',
+
+  'updator.id as updatorId',
+  'updator.email as updatorEmail',
+  'updator.type as updatorType',
+  'updator.first_name as updatorFirstName',
+  'updator.middle_name as updatorMiddleName',
+  'updator.last_name as updatorLastName',
+  'updator.mobile as updatorMobile',
+  'updator.display_picture as updatorDispayPicture',
+  'updator.last_logged_in as updatorLastLoggedIn',
+];
+
+
 /**
  * Fetch all user.
  *
@@ -22,40 +57,29 @@ export async function fetch(
     .connection(tx)(`${USER_TABLE} as user`)
     .leftJoin(`${USER_TABLE} as creator`,'user.created_by','creator.id')
     .leftJoin(`${USER_TABLE} as updator`,'user.updated_by','updator.id')
-    .select(
-      'user.id as id',
-      'user.email as email',
-      'user.type as type',
-      'user.first_name as firstName',
-      'user.middle_name as middleName',
-      'user.last_name as lastName',
-      'user.mobile as mobile',
-      'user.display_picture as dispayPicture',
-      'user.last_logged_in as lastLoggedIn',
-      'user.created_at as createdAt',
-      'user.updated_at as updatedAt',
-
-      'creator.id as creatorId',
-      'creator.email as creatorEmail',
-      'creator.type as creatorType',
-      'creator.first_name as creatorFirstName',
-      'creator.middle_name as creatorMiddleName',
-      'creator.last_name as creatorLastName',
-      'creator.mobile as creatorMobile',
-      'creator.display_picture as creatorDispayPicture',
-      'creator.last_logged_in as creatorLastLoggedIn',
-
-      'updator.id as updatorId',
-      'updator.email as updatorEmail',
-      'updator.type as updatorType',
-      'updator.first_name as updatorFirstName',
-      'updator.middle_name as updatorMiddleName',
-      'updator.last_name as updatorLastName',
-      'updator.mobile as updatorMobile',
-      'updator.display_picture as updatorDispayPicture',
-      'updator.last_logged_in as updatorLastLoggedIn',
-    )
+    .select(USER_SELECT_VALUES)
     .where(whereParam)
+    .then( (response: any) => response.map((data: any) => mapUserToModel(data)));    
+}
+
+
+/**
+ * Search user.
+ *
+ * @param {object} params
+ * @param {knex} tx
+ */
+export async function search(
+  params: any,
+  tx?: Knex
+): Promise<User[]> {
+
+  return db
+    .connection(tx)(`${USER_TABLE} as user`)
+    .leftJoin(`${USER_TABLE} as creator`,'user.created_by','creator.id')
+    .leftJoin(`${USER_TABLE} as updator`,'user.updated_by','updator.id')
+    .select(USER_SELECT_VALUES)
+    .where(params)
     .then( (response: any) => response.map((data: any) => mapUserToModel(data)));    
 }
 
