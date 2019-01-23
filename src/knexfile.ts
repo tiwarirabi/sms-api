@@ -1,17 +1,17 @@
 import config from './config/config';
-// import { toCamelCase, toSnakeCase } from './utils/object';
+import { toCamelCase, toSnakeCase } from './utils/object';
 
-const knexConfig = {
+export const knexConfig = {
   ...config.database,
-  // postProcessResponse: (result: any) => {
-  //   if (Array.isArray(result)) {
-  //     return result.map(row => toCamelCase(row));
-  //   }
+  postProcessResponse: (result: any) => {
+    if (Array.isArray(result)) {
+      return result.map(row => toCamelCase(row));
+    }
 
-  //   return toCamelCase(result);
-  // },
-  // wrapIdentifier: (value: string, origImpl: any) =>
-  //   origImpl(toSnakeCase(value)),
+    return toCamelCase(result);
+  },
+  wrapIdentifier: (value: string, origImpl: any) =>
+    origImpl(toSnakeCase(value)),
   migrations: {
     tableName: 'migration_mvp',
     directory: './src/migrations',
@@ -23,5 +23,3 @@ const knexConfig = {
     stub: './src/stubs/seed.stub'
   }
 };
-
-module.exports = knexConfig;

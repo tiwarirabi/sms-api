@@ -6,14 +6,17 @@ import Knex from 'knex';
  * @return {Promise}
  */
 export function up(knex: Knex) {
-  return knex.schema.alterTable('users', table => {
-    table.dropColumn('type');
-    table
-      .enu('type', ['employee','office', 'admin'])
-      .defaultTo('employee')
-      .notNullable();
-    table.enu('gender', ['male','female', 'other']);
-  });
+  return knex.schema
+    .alterTable('users', table => {
+      table.dropColumn('type');
+    })
+    .alterTable('users', table => {
+      table
+        .enu('type', ['employee', 'office', 'admin'])
+        .defaultTo('employee')
+        .notNullable();
+      table.enu('gender', ['male', 'female', 'other']);
+    });
 }
 
 /**
@@ -23,5 +26,5 @@ export function up(knex: Knex) {
  * @return {Promise}
  */
 export function down(knex: Knex) {
-  return knex.schema.dropTable('users');
+  // return knex.schema.dropTable('users');
 }

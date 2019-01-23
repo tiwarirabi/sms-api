@@ -1,0 +1,16 @@
+BACKEND
+	authentication (branch: dev-2)
+		add proper error handlers for handling username/ password mismatch
+		change the table structure for token so that a single user can have multiple records
+	
+	merge to master
+	
+	validation
+		validation for signup
+		validation for every post, put request
+
+	merge to master
+
+	user session log // Ask with pawan dai if the folowing sql query works or not.
+				select * from users as 'users1' LEFT JOIN users as 'users21 where 						users1.created_at - users2.created_at > 1;
+	api request log

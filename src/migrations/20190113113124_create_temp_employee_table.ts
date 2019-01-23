@@ -14,6 +14,17 @@ export function up(knex: Knex) {
       .references('id')
       .inTable('users_office');
     table.string('email').notNullable();
+    table.text('department').notNullable();
+    table
+      .boolean('is_office_blocked')
+      .defaultTo(0)
+      .comment('0 or 1, 0 is false and 1 is true');
+    table.text('designation').notNullable();
+    table.date('joining_date').notNullable();
+    table
+      .enu('employment_type', ['full-time', 'part-time'])
+      .defaultTo('full-time')
+      .notNullable();
     table.text('key').notNullable();
   });
 }

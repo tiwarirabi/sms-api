@@ -7,7 +7,7 @@ import * as objectUtil from '../utils/object';
 const CATEGORY_TABLE = 'categories';
 const USER_TABLE = 'users';
 
-const CATEGORY_SELECT_VALUES=[
+const CATEGORY_SELECT_VALUES = [
   'category.id as id',
   'category.name as name',
   'category.display_picture as displayPicture',
@@ -33,7 +33,7 @@ const CATEGORY_SELECT_VALUES=[
   'updator.last_name as updatorLastName',
   'updator.mobile as updatorMobile',
   'updator.display_picture as updatorDispayPicture',
-  'updator.last_logged_in as updatorLastLoggedIn',
+  'updator.last_logged_in as updatorLastLoggedIn'
 ];
 
 /**
@@ -50,15 +50,14 @@ export async function fetch(
 
   return db
     .connection(tx)(`${CATEGORY_TABLE} as category`)
-    .leftJoin(`${USER_TABLE} as creator`,'category.created_by','creator.id')
-    .leftJoin(`${USER_TABLE} as updator`,'category.updated_by','updator.id')
+    .leftJoin(`${USER_TABLE} as creator`, 'category.created_by', 'creator.id')
+    .leftJoin(`${USER_TABLE} as updator`, 'category.updated_by', 'updator.id')
     .select(CATEGORY_SELECT_VALUES)
     .where(whereParam)
-    .then( (response: any) => response.map((data: any) => mapCategoryToModel(data)));    
+    .then((response: any) =>
+      response.map((data: any) => mapCategoryToModel(data))
+    );
 }
-
-
-
 
 /**
  * Save Category.
@@ -101,43 +100,48 @@ export function remove(id: number, tx?: Knex) {
 
 /**
  * Map Category to Model.
- * 
- * @param {any} obj 
+ *
+ * @param {any} obj
  */
-function mapCategoryToModel(obj: any): Category{
-    const category: Category = {
-        ...objectUtil.withOnlyAttrs(obj,[
-            'id','name','displayPicture' , 'remarks', 'createdAt', 'updatedAt'
-        ]),
-    };
+function mapCategoryToModel(obj: any): Category {
+  const category: Category = {
+    ...objectUtil.withOnlyAttrs(obj, [
+      'id',
+      'name',
+      'displayPicture',
+      'remarks',
+      'createdAt',
+      'updatedAt'
+    ])
+  };
 
-    if (obj.hasOwnProperty('creatorId') && obj.creatorId) {
-        category.createdBy = {
-            id: obj.creatorId,
-            type: obj.creatorType,
-            email: obj.creatorEmail,
-            firstName: obj.creatorFirstName,
-            middleName: obj.creatorMiddleName,
-            lastName: obj.creatorLastName,
-            lastLoggedIn: obj.creatorLastLoggedIn,
-            displayPicture: obj.creatorDisplayPicture,
-            mobile: obj. creatorMobile,
-        };
-    }
-  
-    if (obj.hasOwnProperty('updatorId') && obj.updatorId) {
-        category.updatedBy = {
-            id: obj.updatorId,
-            type: obj.updatorType,
-            email: obj.updatorEmail,
-            firstName: obj.updatorFirstName,
-            middleName: obj.updatorMiddleName,
-            lastName: obj.updatorLastName,
-            lastLoggedIn: obj.updatorLastLoggedIn,
-            displayPicture: obj.updatorDisplayPicture,
-            mobile: obj. updatorMobile,
-        };
-    }
-  
+  if (obj.hasOwnProperty('creatorId') && obj.creatorId) {
+    category.createdBy = {
+      id: obj.creatorId,
+      type: obj.creatorType,
+      email: obj.creatorEmail,
+      firstName: obj.creatorFirstName,
+      middleName: obj.creatorMiddleName,
+      lastName: obj.creatorLastName,
+      lastLoggedIn: obj.creatorLastLoggedIn,
+      displayPicture: obj.creatorDisplayPicture,
+      mobile: obj.creatorMobile
+    };
+  }
+
+  if (obj.hasOwnProperty('updatorId') && obj.updatorId) {
+    category.updatedBy = {
+      id: obj.updatorId,
+      type: obj.updatorType,
+      email: obj.updatorEmail,
+      firstName: obj.updatorFirstName,
+      middleName: obj.updatorMiddleName,
+      lastName: obj.updatorLastName,
+      lastLoggedIn: obj.updatorLastLoggedIn,
+      displayPicture: obj.updatorDisplayPicture,
+      mobile: obj.updatorMobile
+    };
+  }
+
   return category;
 }

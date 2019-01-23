@@ -1,12 +1,12 @@
 import Knex from 'knex';
 /**
- * Create table <table_name>.
+ * Create table users_employee.
  *
  * @param  {object} knex
  * @return {Promise}
  */
 export function up(knex: Knex) {
-  return knex.schema.alterTable('users_employee', table=>{
+  return knex.schema.alterTable('users_employee', table => {
     table.dropForeign(['office_id']);
     table.dropColumn('office_id');
     table.dropColumn('gender');
@@ -19,11 +19,11 @@ export function up(knex: Knex) {
 }
 
 /**
- * Drop table <table_name>.
+ * Drop table users_employee.
  *
  * @param  {object} knex
  * @return {Promise}
  */
 export function down(knex: Knex) {
-  return knex.schema.dropTable('users_employee');
+  // return knex.schema.dropTable('users_employee');
 }

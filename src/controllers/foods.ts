@@ -9,7 +9,11 @@ import * as foodService from '../services/food';
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function fetchAll(req: Request, res: Response, next: NextFunction) {
+export async function fetchAll(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const allFoods = await foodService.fetchAll();
 
   res.json(allFoods);
@@ -36,7 +40,6 @@ export async function fetchById(
   }
 }
 
-
 /**
  * Fetch single food using category id.
  *
@@ -45,18 +48,18 @@ export async function fetchById(
  * @param {NextFunction} next
  */
 export async function fetchByCategoryId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    try {
-      const food = await foodService.fetchByCategoryId(req.params.id);
-  
-      res.json(food);
-    } catch (error) {
-      throw error;
-    }
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const food = await foodService.fetchByCategoryId(req.params.id);
+
+    res.json(food);
+  } catch (error) {
+    throw error;
   }
+}
 
 /**
  * Save a food.
@@ -65,11 +68,7 @@ export async function fetchByCategoryId(
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function save(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function save(req: Request, res: Response, next: NextFunction) {
   try {
     const food = await foodService.save(req.body);
 
@@ -86,11 +85,7 @@ export async function save(
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function update(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const food = await foodService.update(req.params.id, req.body);
 

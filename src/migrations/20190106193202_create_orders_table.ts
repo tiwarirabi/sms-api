@@ -25,7 +25,16 @@ export function up(knex: Knex) {
       .inTable('users_admin')
       .notNullable();
     table
-      .enu('status', ['order_placed','on_queue','preparing','prepared','packing','packed','shipping','delivered'])
+      .enu('status', [
+        'order_placed',
+        'on_queue',
+        'preparing',
+        'prepared',
+        'packing',
+        'packed',
+        'shipping',
+        'delivered'
+      ])
       .defaultTo('order_placed')
       .notNullable();
     table

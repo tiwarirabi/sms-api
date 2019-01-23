@@ -9,7 +9,11 @@ import * as categoryService from '../services/category';
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function fetchAll(req: Request, res: Response, next: NextFunction) {
+export async function fetchAll(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const allCategories = await categoryService.fetchAll();
 
   res.json(allCategories);
@@ -36,19 +40,14 @@ export async function fetchById(
   }
 }
 
-
-  /**
+/**
  * Save a category.
  *
  * @param {Request} req
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function save(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function save(req: Request, res: Response, next: NextFunction) {
   try {
     const category = await categoryService.save(req.body);
 
@@ -65,11 +64,7 @@ export async function save(
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function update(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const category = await categoryService.update(req.params.id, req.body);
 

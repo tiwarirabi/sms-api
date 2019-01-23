@@ -13,55 +13,53 @@ const USER_ADMIN_TABLE = 'users_admin';
  * @param {object} params
  * @param {knex} tx
  */
-export async function fetch(
-  adminId?: number,
-  tx?: Knex
-): Promise<Admin[]> {
+export async function fetch(adminId?: number, tx?: Knex): Promise<Admin[]> {
   const whereParam = adminId ? { 'admin.id': adminId } : {};
 
   return db
     .connection(tx)(`${USER_ADMIN_TABLE} as admin`)
-    .leftJoin(`${USER_TABLE} as user`,'admin.user_id','user.id')
-    .leftJoin(`${USER_TABLE} as creator`,'admin.created_by','creator.id')
-    .leftJoin(`${USER_TABLE} as updator`,'admin.updated_by','updator.id')
+    .leftJoin(`${USER_TABLE} as user`, 'admin.user_id', 'user.id')
+    .leftJoin(`${USER_TABLE} as creator`, 'admin.created_by', 'creator.id')
+    .leftJoin(`${USER_TABLE} as updator`, 'admin.updated_by', 'updator.id')
     .select(
-        'admin.id as id',
-        'admin.role as role',
+      'admin.id as id',
+      'admin.role as role',
 
-        'user.id as userId',
-        'user.email as userEmail',
-        'user.type as userType',
-        'user.first_name as userFirstName',
-        'user.middle_name as userMiddleName',
-        'user.last_name as userLastName',
-        'user.mobile as userMobile',
-        'user.display_picture as userDispayPicture',
-        'user.last_logged_in as userLastLoggedIn',
+      'user.id as userId',
+      'user.email as userEmail',
+      'user.type as userType',
+      'user.first_name as userFirstName',
+      'user.middle_name as userMiddleName',
+      'user.last_name as userLastName',
+      'user.mobile as userMobile',
+      'user.display_picture as userDispayPicture',
+      'user.last_logged_in as userLastLoggedIn',
 
-        'creator.id as creatorId',
-        'creator.email as creatorEmail',
-        'creator.type as creatorType',
-        'creator.first_name as creatorFirstName',
-        'creator.middle_name as creatorMiddleName',
-        'creator.last_name as creatorLastName',
-        'creator.mobile as creatorMobile',
-        'creator.display_picture as creatorDispayPicture',
-        'creator.last_logged_in as creatorLastLoggedIn',
+      'creator.id as creatorId',
+      'creator.email as creatorEmail',
+      'creator.type as creatorType',
+      'creator.first_name as creatorFirstName',
+      'creator.middle_name as creatorMiddleName',
+      'creator.last_name as creatorLastName',
+      'creator.mobile as creatorMobile',
+      'creator.display_picture as creatorDispayPicture',
+      'creator.last_logged_in as creatorLastLoggedIn',
 
-        'updator.id as updatorId',
-        'updator.email as updatorEmail',
-        'updator.type as updatorType',
-        'updator.first_name as updatorFirstName',
-        'updator.middle_name as updatorMiddleName',
-        'updator.last_name as updatorLastName',
-        'updator.mobile as updatorMobile',
-        'updator.display_picture as updatorDispayPicture',
-        'updator.last_logged_in as updatorLastLoggedIn',
+      'updator.id as updatorId',
+      'updator.email as updatorEmail',
+      'updator.type as updatorType',
+      'updator.first_name as updatorFirstName',
+      'updator.middle_name as updatorMiddleName',
+      'updator.last_name as updatorLastName',
+      'updator.mobile as updatorMobile',
+      'updator.display_picture as updatorDispayPicture',
+      'updator.last_logged_in as updatorLastLoggedIn'
     )
     .where(whereParam)
-    .then( (response: any) => response.map((data: any) => mapAdminToModel(data)));    
+    .then((response: any) =>
+      response.map((data: any) => mapAdminToModel(data))
+    );
 }
-
 
 /**
  * Fetch admin by userId.
@@ -70,53 +68,55 @@ export async function fetch(
  * @param {knex} tx
  */
 export async function fetchByUserId(
-    userId?: number,
-    tx?: Knex
-  ): Promise<Admin[]> {
-    const whereParam = userId ? { 'admin.user_id': userId } : {};
-  
-    return db
-      .connection(tx)(`${USER_ADMIN_TABLE} as admin`)
-      .leftJoin(`${USER_TABLE} as user`,'admin.user_id','user.id')
-      .leftJoin(`${USER_TABLE} as creator`,'admin.created_by','creator.id')
-      .leftJoin(`${USER_TABLE} as updator`,'admin.updated_by','updator.id')
-      .select(
-          'admin.id as id',
-          'admin.role as role',
-  
-          'user.id as userId',
-          'user.email as userEmail',
-          'user.type as userType',
-          'user.first_name as userFirstName',
-          'user.middle_name as userMiddleName',
-          'user.last_name as userLastName',
-          'user.mobile as userMobile',
-          'user.display_picture as userDisplayPicture',
-          'user.last_logged_in as userLastLoggedIn',
-  
-          'creator.id as creatorId',
-          'creator.email as creatorEmail',
-          'creator.type as creatorType',
-          'creator.first_name as creatorFirstName',
-          'creator.middle_name as creatorMiddleName',
-          'creator.last_name as creatorLastName',
-          'creator.mobile as creatorMobile',
-          'creator.display_picture as creatorDispayPicture',
-          'creator.last_logged_in as creatorLastLoggedIn',
-  
-          'updator.id as updatorId',
-          'updator.email as updatorEmail',
-          'updator.type as updatorType',
-          'updator.first_name as updatorFirstName',
-          'updator.middle_name as updatorMiddleName',
-          'updator.last_name as updatorLastName',
-          'updator.mobile as updatorMobile',
-          'updator.display_picture as updatorDispayPicture',
-          'updator.last_logged_in as updatorLastLoggedIn',
-      )
-      .where(whereParam)
-      .then( (response: any) => response.map((data: any) => mapAdminToModel(data)));    
-  }
+  userId?: number,
+  tx?: Knex
+): Promise<Admin[]> {
+  const whereParam = userId ? { 'admin.user_id': userId } : {};
+
+  return db
+    .connection(tx)(`${USER_ADMIN_TABLE} as admin`)
+    .leftJoin(`${USER_TABLE} as user`, 'admin.user_id', 'user.id')
+    .leftJoin(`${USER_TABLE} as creator`, 'admin.created_by', 'creator.id')
+    .leftJoin(`${USER_TABLE} as updator`, 'admin.updated_by', 'updator.id')
+    .select(
+      'admin.id as id',
+      'admin.role as role',
+
+      'user.id as userId',
+      'user.email as userEmail',
+      'user.type as userType',
+      'user.first_name as userFirstName',
+      'user.middle_name as userMiddleName',
+      'user.last_name as userLastName',
+      'user.mobile as userMobile',
+      'user.display_picture as userDisplayPicture',
+      'user.last_logged_in as userLastLoggedIn',
+
+      'creator.id as creatorId',
+      'creator.email as creatorEmail',
+      'creator.type as creatorType',
+      'creator.first_name as creatorFirstName',
+      'creator.middle_name as creatorMiddleName',
+      'creator.last_name as creatorLastName',
+      'creator.mobile as creatorMobile',
+      'creator.display_picture as creatorDispayPicture',
+      'creator.last_logged_in as creatorLastLoggedIn',
+
+      'updator.id as updatorId',
+      'updator.email as updatorEmail',
+      'updator.type as updatorType',
+      'updator.first_name as updatorFirstName',
+      'updator.middle_name as updatorMiddleName',
+      'updator.last_name as updatorLastName',
+      'updator.mobile as updatorMobile',
+      'updator.display_picture as updatorDispayPicture',
+      'updator.last_logged_in as updatorLastLoggedIn'
+    )
+    .where(whereParam)
+    .then((response: any) =>
+      response.map((data: any) => mapAdminToModel(data))
+    );
+}
 
 /**
  * Save contract type.
@@ -159,13 +159,11 @@ export function remove(id: number, tx?: Knex) {
 
 /**
  * Map an object to Admin interface type.
- * @param {Any} obj 
+ * @param {Any} obj
  */
-function mapAdminToModel(obj: any): Admin{
+function mapAdminToModel(obj: any): Admin {
   const admin: Admin = {
-       ...objectUtil.withOnlyAttrs(obj,[
-           'id', 'role'
-       ]),
+    ...objectUtil.withOnlyAttrs(obj, ['id', 'role'])
   };
 
   if (obj.hasOwnProperty('userId') && obj.userId) {
@@ -177,38 +175,38 @@ function mapAdminToModel(obj: any): Admin{
       middleName: obj.userMiddleName,
       lastName: obj.userLastName,
       lastLoggedIn: obj.userLastLoggedIn,
-      displayPicture: obj.userDisplayPicture ? obj.userDisplayPicture  : null ,
-      mobile: obj.userMobile,
+      displayPicture: obj.userDisplayPicture ? obj.userDisplayPicture : null,
+      mobile: obj.userMobile
     };
   }
 
   if (obj.hasOwnProperty('creatorId') && obj.creatorId) {
-      admin.createdBy = {
-        id: obj.creatorId,
-        type: obj.creatorType,
-        email: obj.creatorEmail,
-        firstName: obj.creatorFirstName,
-        middleName: obj.creatorMiddleName,
-        lastName: obj.creatorLastName,
-        lastLoggedIn: obj.creatorLastLoggedIn,
-        displayPicture: obj.creatorDisplayPicture,
-        mobile: obj. creatorMobile,
-      };
-    }
-  
+    admin.createdBy = {
+      id: obj.creatorId,
+      type: obj.creatorType,
+      email: obj.creatorEmail,
+      firstName: obj.creatorFirstName,
+      middleName: obj.creatorMiddleName,
+      lastName: obj.creatorLastName,
+      lastLoggedIn: obj.creatorLastLoggedIn,
+      displayPicture: obj.creatorDisplayPicture,
+      mobile: obj.creatorMobile
+    };
+  }
+
   if (obj.hasOwnProperty('updatorId') && obj.updatorId) {
-      admin.updatedBy = {
-        id: obj.updatorId,
-        type: obj.updatorType,
-        email: obj.updatorEmail,
-        firstName: obj.updatorFirstName,
-        middleName: obj.updatorMiddleName,
-        lastName: obj.updatorLastName,
-        lastLoggedIn: obj.updatorLastLoggedIn,
-        displayPicture: obj.updatorDisplayPicture,
-        mobile: obj. updatorMobile,
-      };
-    }
-  
+    admin.updatedBy = {
+      id: obj.updatorId,
+      type: obj.updatorType,
+      email: obj.updatorEmail,
+      firstName: obj.updatorFirstName,
+      middleName: obj.updatorMiddleName,
+      lastName: obj.updatorLastName,
+      lastLoggedIn: obj.updatorLastLoggedIn,
+      displayPicture: obj.updatorDisplayPicture,
+      mobile: obj.updatorMobile
+    };
+  }
+
   return admin;
 }

@@ -26,7 +26,6 @@ export async function validateOffice(
   }
 }
 
-
 /**
  * Validate office Schema.
  *
@@ -41,7 +40,7 @@ export async function validateOfficeSchema(
   next: NextFunction
 ) {
   try {
-    //const office = req.body;
+    // const office = req.body;
 
     next();
   } catch (error) {

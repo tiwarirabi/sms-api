@@ -8,7 +8,7 @@ export interface User {
   mobile: string;
   displayPicture: string;
   lastLoggedIn: Date;
-  
+
   emailVerificationCode?: string;
   mobileVerificationCode?: string;
   createdBy?: User;

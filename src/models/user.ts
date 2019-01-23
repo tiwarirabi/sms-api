@@ -6,7 +6,7 @@ import * as objectUtil from '../utils/object';
 
 const USER_TABLE = 'users';
 
-const USER_SELECT_VALUES =[
+const USER_SELECT_VALUES = [
   'user.id as id',
   'user.email as email',
   'user.type as type',
@@ -37,9 +37,8 @@ const USER_SELECT_VALUES =[
   'updator.last_name as updatorLastName',
   'updator.mobile as updatorMobile',
   'updator.display_picture as updatorDispayPicture',
-  'updator.last_logged_in as updatorLastLoggedIn',
+  'updator.last_logged_in as updatorLastLoggedIn'
 ];
-
 
 /**
  * Fetch all user.
@@ -47,21 +46,17 @@ const USER_SELECT_VALUES =[
  * @param {object} params
  * @param {knex} tx
  */
-export async function fetch(
-  userId?: number,
-  tx?: Knex
-): Promise<User[]> {
+export async function fetch(userId?: number, tx?: Knex): Promise<User[]> {
   const whereParam = userId ? { 'user.id': userId } : {};
 
   return db
     .connection(tx)(`${USER_TABLE} as user`)
-    .leftJoin(`${USER_TABLE} as creator`,'user.created_by','creator.id')
-    .leftJoin(`${USER_TABLE} as updator`,'user.updated_by','updator.id')
+    .leftJoin(`${USER_TABLE} as creator`, 'user.created_by', 'creator.id')
+    .leftJoin(`${USER_TABLE} as updator`, 'user.updated_by', 'updator.id')
     .select(USER_SELECT_VALUES)
     .where(whereParam)
-    .then( (response: any) => response.map((data: any) => mapUserToModel(data)));    
+    .then((response: any) => response.map((data: any) => mapUserToModel(data)));
 }
-
 
 /**
  * Search user.
@@ -69,18 +64,21 @@ export async function fetch(
  * @param {object} params
  * @param {knex} tx
  */
-export async function search(
-  params: any,
-  tx?: Knex
-): Promise<User[]> {
+export async function search(params: any, tx?: Knex): Promise<User[]> {
+  // directly accessing email is ambigous so adding the user table name to the params.
+  const keys = Object.keys(params);
+  const newParams: any = {};
+  keys.map((key: string) => {
+    newParams[`user.${key}`] = params[key];
+  });
 
   return db
     .connection(tx)(`${USER_TABLE} as user`)
-    .leftJoin(`${USER_TABLE} as creator`,'user.created_by','creator.id')
-    .leftJoin(`${USER_TABLE} as updator`,'user.updated_by','updator.id')
+    .leftJoin(`${USER_TABLE} as creator`, 'user.created_by', 'creator.id')
+    .leftJoin(`${USER_TABLE} as updator`, 'user.updated_by', 'updator.id')
     .select(USER_SELECT_VALUES)
-    .where(params)
-    .then( (response: any) => response.map((data: any) => mapUserToModel(data)));    
+    .where(newParams)
+    .then((response: any) => response.map((data: any) => mapUserToModel(data)));
 }
 
 /**
@@ -122,44 +120,50 @@ export function remove(id: number, tx?: Knex) {
     .delete();
 }
 
-
-
-
-function mapUserToModel(obj: any): User{
+function mapUserToModel(obj: any): User {
   const user: User = {
-       ...objectUtil.withOnlyAttrs(obj,[
-           'id', 'email', 'type', 'firstName', 'middleName', 'lastName', 'mobile', 'displayPicture', 'lastLoggedIn', 'createdAt', 'updatedAt'
-       ]),
-       
+    ...objectUtil.withOnlyAttrs(obj, [
+      'id',
+      'email',
+      'type',
+      'firstName',
+      'middleName',
+      'lastName',
+      'mobile',
+      'displayPicture',
+      'lastLoggedIn',
+      'createdAt',
+      'updatedAt'
+    ])
   };
 
   if (obj.hasOwnProperty('creatorId') && obj.creatorId) {
-      user.createdBy = {
-        id: obj.creatorId,
-        type: obj.creatorType,
-        email: obj.creatorEmail,
-        firstName: obj.creatorFirstName,
-        middleName: obj.creatorMiddleName,
-        lastName: obj.creatorLastName,
-        lastLoggedIn: obj.creatorLastLoggedIn,
-        displayPicture: obj.creatorDisplayPicture,
-        mobile: obj. creatorMobile,
-      };
-    }
-  
+    user.createdBy = {
+      id: obj.creatorId,
+      type: obj.creatorType,
+      email: obj.creatorEmail,
+      firstName: obj.creatorFirstName,
+      middleName: obj.creatorMiddleName,
+      lastName: obj.creatorLastName,
+      lastLoggedIn: obj.creatorLastLoggedIn,
+      displayPicture: obj.creatorDisplayPicture,
+      mobile: obj.creatorMobile
+    };
+  }
+
   if (obj.hasOwnProperty('updatorId') && obj.updatorId) {
-      user.updatedBy = {
-        id: obj.updatorId,
-        type: obj.updatorType,
-        email: obj.updatorEmail,
-        firstName: obj.updatorFirstName,
-        middleName: obj.updatorMiddleName,
-        lastName: obj.updatorLastName,
-        lastLoggedIn: obj.updatorLastLoggedIn,
-        displayPicture: obj.updatorDisplayPicture,
-        mobile: obj. updatorMobile,
-      };
-    }
-  
+    user.updatedBy = {
+      id: obj.updatorId,
+      type: obj.updatorType,
+      email: obj.updatorEmail,
+      firstName: obj.updatorFirstName,
+      middleName: obj.updatorMiddleName,
+      lastName: obj.updatorLastName,
+      lastLoggedIn: obj.updatorLastLoggedIn,
+      displayPicture: obj.updatorDisplayPicture,
+      mobile: obj.updatorMobile
+    };
+  }
+
   return user;
 }

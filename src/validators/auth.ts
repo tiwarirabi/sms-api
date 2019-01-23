@@ -18,20 +18,20 @@ export async function validateLogin(
   next: NextFunction
 ) {
   try {
-
     const email = req.body.email;
     const password = req.body.password;
 
-    const [user] = await userService.search({email,password});
-    if(user) {
-      (req as AuthRequest).user = user; 
+    const [user] = await userService.search({ email, password });
+
+    if (user) {
+      (req as AuthRequest).user = user;
       next();
-
+    } else {
+      throw new AuthError('Username/Password mismatch.');
     }
-    next(new AuthError("Username/Password mismatch."));
-
   } catch (error) {
-    next(error);
+    // next(error);
+    throw error;
   }
 }
 
@@ -49,8 +49,7 @@ export async function validateToken(
   next: NextFunction
 ) {
   try {
-    
-    //const token = req.body;
+    // const token = req.body;
 
     next();
   } catch (error) {

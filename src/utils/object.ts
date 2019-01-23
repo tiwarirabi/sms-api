@@ -1,5 +1,5 @@
 import * as camelCase from 'camelize';
-import * as snakeCase from 'js-snakecase';
+// import * as snakeCase from 'js-snakecase';
 import { differenceBy, intersectionBy } from 'lodash';
 
 /**
@@ -59,15 +59,15 @@ export function difference(list1: any[], list2: any[], key: string = 'id') {
   };
 }
 
-  /**
-   * Make objects value into camelCase.
-   *
-   * @param {Object} obj
-   * @returns {Object}
-   */
-  export function toCamelCase(obj: any) {
-    return camelCase(obj);
-  }
+/**
+ * Make objects value into camelCase.
+ *
+ * @param {Object} obj
+ * @returns {Object}
+ */
+export function toCamelCase(obj: any) {
+  return camelCase(obj);
+}
 
 /**
  * Make objects value into snake_case.
@@ -76,5 +76,15 @@ export function difference(list1: any[], list2: any[], key: string = 'id') {
  * @returns {Object}
  */
 export function toSnakeCase(obj: any) {
-  return snakeCase.toSnakeCase(obj);
+  if (!obj) {
+    return '';
+  }
+
+  const snakeCased = String(obj)
+    .replace(/^[^A-Za-z0-9]*|[^A-Za-z0-9]*$/g, '')
+    .replace(/([a-z])([A-Z])/g, (m, a, b) => a + '_' + b.toLowerCase())
+    .replace(/[^A-Za-z0-9]+|_+/g, '_')
+    .toLowerCase();
+
+  return snakeCased;
 }

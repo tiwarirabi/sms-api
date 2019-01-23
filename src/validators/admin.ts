@@ -26,8 +26,6 @@ export async function validateAdmin(
   }
 }
 
-
-
 /**
  * Validate admin Schema.
  *
@@ -42,7 +40,7 @@ export async function validateAdminSchema(
   next: NextFunction
 ) {
   try {
-    //const admin = req.body;
+    // const admin = req.body;
 
     next();
   } catch (error) {
