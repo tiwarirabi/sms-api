@@ -9,7 +9,7 @@ export async function fetchAll(): Promise<User[]> {
   try {
     return await userModel.fetch();
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -20,7 +20,7 @@ export async function search(params: any): Promise<User[]> {
   try {
     return await userModel.search(params);
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -36,7 +36,7 @@ export async function fetchById(userId: number): Promise<User> {
 
     return user;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -51,7 +51,7 @@ export async function save(user: any) {
 
     return { id, ...user };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -67,7 +67,7 @@ export async function update(userId: number, userBody: User) {
 
     return { id: userId, ...userBody };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -82,6 +82,6 @@ export async function remove(userId: number) {
 
     return { id: userId };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }

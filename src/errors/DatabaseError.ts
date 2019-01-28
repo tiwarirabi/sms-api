@@ -4,15 +4,12 @@ import CustomError from '../errors/CustomError';
  * Database error class to handle database errors.
  */
 class DatabaseError extends CustomError {
-  /**
-   * Contructor of DatabaseError.
-   *
-   * @param {String} message
-   * @param {String} details
-   */
-  constructor(message: string, details: string) {
+  constructor(message: string, details?: string, code?: number) {
     super(message);
-    this.details = details;
+    this.details = details || '';
+    this.message = message || 'Database Error';
+    this.code = 400;
+    Object.setPrototypeOf(this, DatabaseError.prototype);
   }
 }
 

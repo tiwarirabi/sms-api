@@ -4,16 +4,12 @@ import CustomError from './CustomError';
  * Autherror class to handle auth errors.
  */
 class AuthError extends CustomError {
-  /**
-   * Contructor of AuthError.
-   *
-   * @param {String} message
-   * @param {String} details
-   */
-  constructor(message: string, details?: string) {
+  constructor(message: string, details?: string, code?: number) {
     super(message);
     this.details = details;
-    this.stack = details;
+    this.message = message;
+    this.code = 401;
+    Object.setPrototypeOf(this, AuthError.prototype);
   }
 }
 

@@ -10,7 +10,7 @@ export async function fetchAll(): Promise<Office[]> {
   try {
     return await officeModel.fetch();
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -62,7 +62,7 @@ export async function save(office: any) {
 
     return { id, ...office };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -78,7 +78,7 @@ export async function update(officeId: number, officeBody: Office) {
 
     return { id: officeId, ...officeBody };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -93,6 +93,6 @@ export async function remove(officeId: number) {
 
     return { id: officeId };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }

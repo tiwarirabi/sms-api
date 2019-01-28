@@ -4,6 +4,23 @@ import { Request, Response, NextFunction } from 'express';
 import logger from '../utils/logger';
 import { buildError } from '../utils/error';
 
+// import AuthError from '../errors/AuthError';
+
+/**
+ * Error response middleware for custom error.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ */
+export function customError(req: Request, res: Response) {
+  res.status(HttpStatus.UNAUTHORIZED).json({
+    error: {
+      code: HttpStatus.UNAUTHORIZED,
+      message: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED)
+    }
+  });
+}
+
 /**
  * Error response middleware for 404 not found.
  *

@@ -9,7 +9,7 @@ export async function fetchAll(): Promise<Food[]> {
   try {
     return await foodModel.fetch();
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -25,7 +25,7 @@ export async function fetchById(foodId: number): Promise<Food> {
 
     return food;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -41,7 +41,7 @@ export async function fetchByCategoryId(categoryId: number): Promise<Food[]> {
 
     return foods;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -56,7 +56,7 @@ export async function save(food: any) {
 
     return { id, ...food };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -72,7 +72,7 @@ export async function update(foodId: number, foodBody: Food) {
 
     return { id: foodId, ...foodBody };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -87,6 +87,6 @@ export async function remove(foodId: number) {
 
     return { id: foodId };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }

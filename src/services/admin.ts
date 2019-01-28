@@ -9,7 +9,7 @@ export async function fetchAll(): Promise<Admin[]> {
   try {
     return await adminModel.fetch();
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -56,7 +56,7 @@ export async function save(admin: any) {
 
     return { id, ...admin };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -72,7 +72,7 @@ export async function update(adminId: number, adminBody: Admin) {
 
     return { id: adminId, ...adminBody };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -87,6 +87,6 @@ export async function remove(adminId: number) {
 
     return { id: adminId };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }

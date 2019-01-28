@@ -24,7 +24,7 @@ export async function fetchAll(): Promise<Category[]> {
           : []
     }));
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -51,7 +51,7 @@ export async function fetchById(categoryId: number): Promise<Category> {
 
     return category;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -66,7 +66,7 @@ export async function save(category: any) {
 
     return { id, ...category };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -82,7 +82,7 @@ export async function update(categoryId: number, categoryBody: Category) {
 
     return { id: categoryId, ...categoryBody };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -97,6 +97,6 @@ export async function remove(categoryId: number) {
 
     return { id: categoryId };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }

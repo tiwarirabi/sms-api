@@ -30,8 +30,7 @@ export async function validateLogin(
       throw new AuthError('Username/Password mismatch.');
     }
   } catch (error) {
-    // next(error);
-    throw error;
+    return next(error);
   }
 }
 

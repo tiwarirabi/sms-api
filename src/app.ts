@@ -22,6 +22,7 @@ app.use(bodyParser.json());
 app.use('/', routes);
 
 // Error Middlewares
+// app.use(errorHandler.customError);
 app.use(errorHandler.genericErrorHandler);
 app.use(errorHandler.notFound);
 

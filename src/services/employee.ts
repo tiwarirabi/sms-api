@@ -9,7 +9,7 @@ export async function fetchAll(): Promise<Employee[]> {
   try {
     return await employeeModel.fetch();
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -72,7 +72,7 @@ export async function save(employee: any) {
 
     return { id, ...employee };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -88,7 +88,7 @@ export async function update(employeeId: number, employeeBody: Employee) {
 
     return { id: employeeId, ...employeeBody };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -103,6 +103,6 @@ export async function remove(employeeId: number) {
 
     return { id: employeeId };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
