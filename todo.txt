@@ -2,7 +2,7 @@ BACKEND
 
 	1) create a new route for user signup inside AuthRouter
 		new controller inside auth controller which will handle signup
-		email, password, mobile, gender
+		email, first name, middle name, last name, password, mobile, gender
 
 	merge to master
 
