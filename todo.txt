@@ -1,13 +1,28 @@
 BACKEND
-	authentication (branch: dev-2)
-		add proper error handlers for handling username/ password mismatch
-		change the table structure for token so that a single user can have multiple records
-	
+
+	1) create a new route for user signup inside AuthRouter
+		new controller inside auth controller which will handle signup
+		email, password, mobile, gender
+
 	merge to master
-	
-	validation
-		validation for signup
-		validation for every post, put request
+
+	2) after login when we generate new token, if a new refresh token is being created, save it in the database using tokenService
+
+	when validating refresh token, first validate if the isExpired is true or false, 
+		if isExpired is false
+			check if the refreshToken in the body has expired or not
+				if expired 
+					set the database isExpired to true and respond with AuthForbiddenError
+				else
+					create new refresh token and access token
+		if isExpired is true
+			respond with a AuthForbiddenError
+
+	merge to master 
+
+	3) create models, services, controllers, routes and validators for 
+		order
+		cart
 
 	merge to master
 
