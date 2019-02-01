@@ -8,7 +8,7 @@ const FOOD_TABLE = 'foods';
 const CATEGORIES_TABLE = 'categories';
 const USER_TABLE = 'users';
 
-const FOOD_SELECT_VALUES=[
+const FOOD_SELECT_VALUES = [
   'food.id as id',
   'food.name as name',
   'food.price as price',
@@ -39,7 +39,7 @@ const FOOD_SELECT_VALUES=[
   'updator.last_name as updatorLastName',
   'updator.mobile as updatorMobile',
   'updator.display_picture as updatorDispayPicture',
-  'updator.last_logged_in as updatorLastLoggedIn',
+  'updator.last_logged_in as updatorLastLoggedIn'
 ];
 
 /**
@@ -48,20 +48,21 @@ const FOOD_SELECT_VALUES=[
  * @param {number} foodId
  * @param {knex} tx
  */
-export async function fetch(
-  foodId?: number,
-  tx?: Knex
-): Promise<Food[]> {
+export async function fetch(foodId?: number, tx?: Knex): Promise<Food[]> {
   const whereParam = foodId ? { 'food.id': foodId } : {};
 
   return db
     .connection(tx)(`${FOOD_TABLE} as food`)
-    .leftJoin(`${USER_TABLE} as creator`,'food.created_by','creator.id')
-    .leftJoin(`${USER_TABLE} as updator`,'food.updated_by','updator.id')
-    .leftJoin(`${CATEGORIES_TABLE} as category`,`category.id`,`food.category_id`)
+    .leftJoin(`${USER_TABLE} as creator`, 'food.created_by', 'creator.id')
+    .leftJoin(`${USER_TABLE} as updator`, 'food.updated_by', 'updator.id')
+    .leftJoin(
+      `${CATEGORIES_TABLE} as category`,
+      `category.id`,
+      `food.category_id`
+    )
     .select(FOOD_SELECT_VALUES)
     .where(whereParam)
-    .then( (response: any) => response.map((data: any) => mapFoodToModel(data)));    
+    .then((response: any) => response.map((data: any) => mapFoodToModel(data)));
 }
 
 /**
@@ -71,23 +72,24 @@ export async function fetch(
  * @param {knex} tx
  */
 export async function fetchByCategoryId(
-    categoryId?: number,
-    tx?: Knex
-  ): Promise<Food[]> {
-    const whereParam = categoryId ? { 'category.id': categoryId } : {};
-  
-    return db
-      .connection(tx)(`${FOOD_TABLE} as food`)
-      .leftJoin(`${USER_TABLE} as creator`,'food.created_by','creator.id')
-      .leftJoin(`${USER_TABLE} as updator`,'food.updated_by','updator.id')
-      .leftJoin(`${CATEGORIES_TABLE} as category`,`category.id`,`food.category_id`)
-      .select(FOOD_SELECT_VALUES)
-      .where(whereParam)
-      .then( (response: any) => response.map((data: any) => mapFoodToModel(data)));    
-  }
+  categoryId?: number,
+  tx?: Knex
+): Promise<Food[]> {
+  const whereParam = categoryId ? { 'category.id': categoryId } : {};
 
-
-
+  return db
+    .connection(tx)(`${FOOD_TABLE} as food`)
+    .leftJoin(`${USER_TABLE} as creator`, 'food.created_by', 'creator.id')
+    .leftJoin(`${USER_TABLE} as updator`, 'food.updated_by', 'updator.id')
+    .leftJoin(
+      `${CATEGORIES_TABLE} as category`,
+      `category.id`,
+      `food.category_id`
+    )
+    .select(FOOD_SELECT_VALUES)
+    .where(whereParam)
+    .then((response: any) => response.map((data: any) => mapFoodToModel(data)));
+}
 
 /**
  * Save Food.
@@ -130,52 +132,58 @@ export function remove(id: number, tx?: Knex) {
 
 /**
  * Map Food to Model.
- * 
- * @param {any} obj 
+ *
+ * @param {any} obj
  */
-function mapFoodToModel(obj: any): Food{
-    const food: Food = {
-        ...objectUtil.withOnlyAttrs(obj,[
-            'id','name','price', 'remarks', 'categoryId', 'createdAt', 'updatedAt'
-        ]),
+function mapFoodToModel(obj: any): Food {
+  const food: Food = {
+    ...objectUtil.withOnlyAttrs(obj, [
+      'id',
+      'name',
+      'price',
+      'remarks',
+      'categoryId',
+      'createdAt',
+      'updatedAt'
+    ])
+  };
+
+  if (obj.hasOwnProperty('categoryId') && obj.categoryId) {
+    food.category = {
+      id: obj.categoryId,
+      name: obj.categoryName,
+      remarks: obj.remarks,
+      displayPicture: obj.displayPicture
     };
+  }
 
-    if (obj.hasOwnProperty('categoryId') && obj.categoryId) {
-        food.category = {
-            id: obj.categoryId,
-            name: obj.categoryName,
-            remarks: obj.remarks,
-            displayPicture: obj.displayPicture,
-        };
-    }
+  if (obj.hasOwnProperty('creatorId') && obj.creatorId) {
+    food.createdBy = {
+      id: obj.creatorId,
+      type: obj.creatorType,
+      email: obj.creatorEmail,
+      firstName: obj.creatorFirstName,
+      middleName: obj.creatorMiddleName,
+      lastName: obj.creatorLastName,
+      lastLoggedIn: obj.creatorLastLoggedIn,
+      displayPicture: obj.creatorDisplayPicture,
+      mobile: obj.creatorMobile
+    };
+  }
 
-    if (obj.hasOwnProperty('creatorId') && obj.creatorId) {
-        food.createdBy = {
-            id: obj.creatorId,
-            type: obj.creatorType,
-            email: obj.creatorEmail,
-            firstName: obj.creatorFirstName,
-            middleName: obj.creatorMiddleName,
-            lastName: obj.creatorLastName,
-            lastLoggedIn: obj.creatorLastLoggedIn,
-            displayPicture: obj.creatorDisplayPicture,
-            mobile: obj. creatorMobile,
-        };
-    }
-  
-    if (obj.hasOwnProperty('updatorId') && obj.updatorId) {
-        food.updatedBy = {
-            id: obj.updatorId,
-            type: obj.updatorType,
-            email: obj.updatorEmail,
-            firstName: obj.updatorFirstName,
-            middleName: obj.updatorMiddleName,
-            lastName: obj.updatorLastName,
-            lastLoggedIn: obj.updatorLastLoggedIn,
-            displayPicture: obj.updatorDisplayPicture,
-            mobile: obj. updatorMobile,
-        };
-    }
-  
+  if (obj.hasOwnProperty('updatorId') && obj.updatorId) {
+    food.updatedBy = {
+      id: obj.updatorId,
+      type: obj.updatorType,
+      email: obj.updatorEmail,
+      firstName: obj.updatorFirstName,
+      middleName: obj.updatorMiddleName,
+      lastName: obj.updatorLastName,
+      lastLoggedIn: obj.updatorLastLoggedIn,
+      displayPicture: obj.updatorDisplayPicture,
+      mobile: obj.updatorMobile
+    };
+  }
+
   return food;
 }

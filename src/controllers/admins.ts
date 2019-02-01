@@ -9,7 +9,11 @@ import * as adminService from '../services/admin';
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function fetchAll(req: Request, res: Response, next: NextFunction) {
+export async function fetchAll(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const allAdmins = await adminService.fetchAll();
 
   res.json(allAdmins);
@@ -36,7 +40,6 @@ export async function fetchById(
   }
 }
 
-
 /**
  * Fetch single admin using user id.
  *
@@ -45,33 +48,27 @@ export async function fetchById(
  * @param {NextFunction} next
  */
 export async function fetchByUserId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    try {
-      const admin = await adminService.fetchByUserId(req.params.id);
-  
-      res.json(admin);
-    } catch (error) {
-      throw error;
-    }
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const admin = await adminService.fetchByUserId(req.params.id);
+
+    res.json(admin);
+  } catch (error) {
+    throw error;
   }
-  
+}
 
-
-    /**
+/**
  * Save a admin.
  *
  * @param {Request} req
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function save(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function save(req: Request, res: Response, next: NextFunction) {
   try {
     const admin = await adminService.save(req.body);
 
@@ -88,11 +85,7 @@ export async function save(
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function update(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const admin = await adminService.update(req.params.id, req.body);
 

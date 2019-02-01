@@ -8,7 +8,7 @@ const INDUSTRY_TABLE = 'industries';
 const OFFICE_INDUSTRY_TABLE = 'office_industries';
 const USER_TABLE = 'users';
 
-const INDUSTRY_SELECT_VALUES=[
+const INDUSTRY_SELECT_VALUES = [
   'industry.id as id',
   'industry.name as name',
   'industry.remarks as remarks',
@@ -33,7 +33,7 @@ const INDUSTRY_SELECT_VALUES=[
   'updator.last_name as updatorLastName',
   'updator.mobile as updatorMobile',
   'updator.display_picture as updatorDispayPicture',
-  'updator.last_logged_in as updatorLastLoggedIn',
+  'updator.last_logged_in as updatorLastLoggedIn'
 ];
 
 /**
@@ -50,15 +50,14 @@ export async function fetch(
 
   return db
     .connection(tx)(`${INDUSTRY_TABLE} as industry`)
-    .leftJoin(`${USER_TABLE} as creator`,'user.created_by','creator.id')
-    .leftJoin(`${USER_TABLE} as updator`,'user.updated_by','updator.id')
+    .leftJoin(`${USER_TABLE} as creator`, 'user.created_by', 'creator.id')
+    .leftJoin(`${USER_TABLE} as updator`, 'user.updated_by', 'updator.id')
     .select(INDUSTRY_SELECT_VALUES)
     .where(whereParam)
-    .then( (response: any) => response.map((data: any) => mapIndustryToModel(data)));    
+    .then((response: any) =>
+      response.map((data: any) => mapIndustryToModel(data))
+    );
 }
-
-
-
 
 /**
  * Fetch all Industry using office id.
@@ -67,25 +66,26 @@ export async function fetch(
  * @param {knex} tx
  */
 export async function fetchByOfficeId(
-    officeId: number,
-    tx?: Knex
-  ): Promise<Industry[]> {
-    const whereParam = officeId ? { 'officeIndustries.office_id': officeId } : {};
-  
-    return db
-      .connection(tx)(`${OFFICE_INDUSTRY_TABLE} as officeIndustries`)
-      .leftJoin(`${INDUSTRY_TABLE} as industry`,'industry.id','officeIndustries.industry_id')
-      .leftJoin(`${USER_TABLE} as creator`,'industry.created_by','creator.id')
-      .leftJoin(`${USER_TABLE} as updator`,'industry.updated_by','updator.id')
-      .select(INDUSTRY_SELECT_VALUES)
-      .where(whereParam)
-      .then( (response: any) => response.map((data: any) => mapIndustryToModel(data)));    
-  }
+  officeId: number,
+  tx?: Knex
+): Promise<Industry[]> {
+  const whereParam = officeId ? { 'officeIndustries.office_id': officeId } : {};
 
-
-
-
-
+  return db
+    .connection(tx)(`${OFFICE_INDUSTRY_TABLE} as officeIndustries`)
+    .leftJoin(
+      `${INDUSTRY_TABLE} as industry`,
+      'industry.id',
+      'officeIndustries.industry_id'
+    )
+    .leftJoin(`${USER_TABLE} as creator`, 'industry.created_by', 'creator.id')
+    .leftJoin(`${USER_TABLE} as updator`, 'industry.updated_by', 'updator.id')
+    .select(INDUSTRY_SELECT_VALUES)
+    .where(whereParam)
+    .then((response: any) =>
+      response.map((data: any) => mapIndustryToModel(data))
+    );
+}
 
 /**
  * Save industry.
@@ -128,43 +128,47 @@ export function remove(id: number, tx?: Knex) {
 
 /**
  * Map Industry to Model.
- * 
- * @param {any} obj 
+ *
+ * @param {any} obj
  */
-function mapIndustryToModel(obj: any): Industry{
-    const industry: Industry = {
-        ...objectUtil.withOnlyAttrs(obj,[
-            'id','name', 'remarks', 'createdAt', 'updatedAt'
-        ]),
-    };
+function mapIndustryToModel(obj: any): Industry {
+  const industry: Industry = {
+    ...objectUtil.withOnlyAttrs(obj, [
+      'id',
+      'name',
+      'remarks',
+      'createdAt',
+      'updatedAt'
+    ])
+  };
 
-    if (obj.hasOwnProperty('creatorId') && obj.creatorId) {
-        industry.createdBy = {
-            id: obj.creatorId,
-            type: obj.creatorType,
-            email: obj.creatorEmail,
-            firstName: obj.creatorFirstName,
-            middleName: obj.creatorMiddleName,
-            lastName: obj.creatorLastName,
-            lastLoggedIn: obj.creatorLastLoggedIn,
-            displayPicture: obj.creatorDisplayPicture,
-            mobile: obj. creatorMobile,
-        };
-    }
-  
-    if (obj.hasOwnProperty('updatorId') && obj.updatorId) {
-        industry.updatedBy = {
-            id: obj.updatorId,
-            type: obj.updatorType,
-            email: obj.updatorEmail,
-            firstName: obj.updatorFirstName,
-            middleName: obj.updatorMiddleName,
-            lastName: obj.updatorLastName,
-            lastLoggedIn: obj.updatorLastLoggedIn,
-            displayPicture: obj.updatorDisplayPicture,
-            mobile: obj. updatorMobile,
-        };
-    }
-  
+  if (obj.hasOwnProperty('creatorId') && obj.creatorId) {
+    industry.createdBy = {
+      id: obj.creatorId,
+      type: obj.creatorType,
+      email: obj.creatorEmail,
+      firstName: obj.creatorFirstName,
+      middleName: obj.creatorMiddleName,
+      lastName: obj.creatorLastName,
+      lastLoggedIn: obj.creatorLastLoggedIn,
+      displayPicture: obj.creatorDisplayPicture,
+      mobile: obj.creatorMobile
+    };
+  }
+
+  if (obj.hasOwnProperty('updatorId') && obj.updatorId) {
+    industry.updatedBy = {
+      id: obj.updatorId,
+      type: obj.updatorType,
+      email: obj.updatorEmail,
+      firstName: obj.updatorFirstName,
+      middleName: obj.updatorMiddleName,
+      lastName: obj.updatorLastName,
+      lastLoggedIn: obj.updatorLastLoggedIn,
+      displayPicture: obj.updatorDisplayPicture,
+      mobile: obj.updatorMobile
+    };
+  }
+
   return industry;
 }

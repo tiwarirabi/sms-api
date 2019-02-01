@@ -9,7 +9,11 @@ import * as employeeService from '../services/employee';
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function fetchAll(req: Request, res: Response, next: NextFunction) {
+export async function fetchAll(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const allEmployees = await employeeService.fetchAll();
 
   res.json(allEmployees);
@@ -36,7 +40,6 @@ export async function fetchById(
   }
 }
 
-
 /**
  * Fetch single employee using user id.
  *
@@ -45,20 +48,20 @@ export async function fetchById(
  * @param {NextFunction} next
  */
 export async function fetchByUserId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    try {
-      const employee = await employeeService.fetchByUserId(req.params.id);
-  
-      res.json(employee);
-    } catch (error) {
-      throw error;
-    }
-  }
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const employee = await employeeService.fetchByUserId(req.params.id);
 
-  /**
+    res.json(employee);
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
  * Fetch list of employees using office id.
  *
  * @param {Request} req
@@ -78,20 +81,15 @@ export async function fetchByOfficeId(
     throw error;
   }
 }
-  
 
-  /**
+/**
  * Save a employee.
  *
  * @param {Request} req
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function save(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function save(req: Request, res: Response, next: NextFunction) {
   try {
     const employee = await employeeService.save(req.body);
 
@@ -108,11 +106,7 @@ export async function save(
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function update(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const employee = await employeeService.update(req.params.id, req.body);
 

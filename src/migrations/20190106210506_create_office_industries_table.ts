@@ -32,7 +32,7 @@ export function up(knex: Knex) {
       .references('id')
       .inTable('users');
     table.dateTime('updated_at');
-    table.unique(['office_id','industry_id']);
+    table.unique(['office_id', 'industry_id']);
   });
 }
 

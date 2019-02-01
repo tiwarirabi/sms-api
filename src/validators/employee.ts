@@ -26,8 +26,6 @@ export async function validateEmployee(
   }
 }
 
-
-
 /**
  * Validate employee Schema.
  *
@@ -42,7 +40,7 @@ export async function validateEmployeeSchema(
   next: NextFunction
 ) {
   try {
-    //const employee = req.body;
+    // const employee = req.body;
 
     next();
   } catch (error) {

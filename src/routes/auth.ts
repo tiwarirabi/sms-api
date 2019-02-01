@@ -1,18 +1,18 @@
 import { Router } from 'express';
 
-import * as auth from '../controllers/auth';
- import { validateLogin, validateToken } from '../validators/auth';
+import { generateToken } from '../controllers/auth';
+import { validateLogin, validateRefreshToken } from '../validators/auth';
 
 const router = Router();
 
 /**
  * POST /auth
  */
-router.post('/', validateLogin , auth.generateToken);
+router.post('/', validateLogin, generateToken);
 
 /**
  * POST /auth/token
  */
-router.get('/',validateToken, auth.generateToken);
+router.post('/token', validateRefreshToken, generateToken);
 
 export default router;

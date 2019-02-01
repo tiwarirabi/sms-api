@@ -40,7 +40,7 @@ export async function validateUserSchema(
   next: NextFunction
 ) {
   try {
-    //const user = req.body;
+    // const user = req.body;
 
     next();
   } catch (error) {

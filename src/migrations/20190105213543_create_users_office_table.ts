@@ -14,17 +14,23 @@ export function up(knex: Knex) {
       .unique()
       .references('id')
       .inTable('users');
-    table.string('name').unique().notNullable();
+    table
+      .string('name')
+      .unique()
+      .notNullable();
     table.text('location').notNullable();
     table.text('location_gps');
     table.integer('no_of_employees').notNullable();
     table.integer('max_budget').notNullable();
-    table.string('phone',20).notNullable();
+    table.string('phone', 20).notNullable();
     table.text('delivery_time');
     table.text('pan_no').notNullable();
     table.text('regd_no').notNullable();
     table.text('remarks');
-    table.boolean('is_verified').defaultTo(0).comment('0 or 1, 0 if false, 1 if true');
+    table
+      .boolean('is_verified')
+      .defaultTo(0)
+      .comment('0 or 1, 0 if false, 1 if true');
     table
       .integer('verified_by')
       .references('id')

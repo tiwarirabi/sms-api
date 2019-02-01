@@ -1,4 +1,11 @@
 import * as HttpStatus from 'http-status-codes';
+import CustomError from '../errors/CustomError';
+
+interface MyError {
+  code: number;
+  message: string;
+  details?: string[] | string;
+}
 
 /**
  * Build error response for validation errors.
@@ -6,10 +13,10 @@ import * as HttpStatus from 'http-status-codes';
  * @param  {error} err
  * @return {array|object}
  */
-export function buildError(err: any) {
+export function buildError(err: any): MyError {
   // Validation errors
   if (err.isJoi || err instanceof SyntaxError) {
-    return {
+    const errorPayload = {
       code: HttpStatus.BAD_REQUEST,
       message: HttpStatus.getStatusText(HttpStatus.BAD_REQUEST),
       details:
@@ -21,7 +28,22 @@ export function buildError(err: any) {
           };
         })
     };
+
+    return errorPayload as MyError;
   }
+
+  // Custome Errors
+  if (err instanceof CustomError) {
+    const errorPayload = {
+      code: err.code,
+      message: err.message,
+      details: err.details
+    };
+
+    return errorPayload as MyError;
+  }
+
+  // Other Errors
 
   return {
     code: HttpStatus.INTERNAL_SERVER_ERROR,

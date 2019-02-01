@@ -26,8 +26,6 @@ export async function validateFood(
   }
 }
 
-
-
 /**
  * Validate food Schema.
  *
@@ -42,7 +40,7 @@ export async function validateFoodSchema(
   next: NextFunction
 ) {
   try {
-    //const food = req.body;
+    // const food = req.body;
 
     next();
   } catch (error) {

@@ -9,7 +9,11 @@ import * as officeService from '../services/office';
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function fetchAll(req: Request, res: Response, next: NextFunction) {
+export async function fetchAll(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const allOffices = await officeService.fetchAll();
 
   res.json(allOffices);
@@ -36,7 +40,6 @@ export async function fetchById(
   }
 }
 
-
 /**
  * Fetch single office using user id.
  *
@@ -45,32 +48,27 @@ export async function fetchById(
  * @param {NextFunction} next
  */
 export async function fetchByUserId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    try {
-      const office = await officeService.fetchByUserId(req.params.id);
-  
-      res.json(office);
-    } catch (error) {
-      throw error;
-    }
-  }
-  
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const office = await officeService.fetchByUserId(req.params.id);
 
-  /**
+    res.json(office);
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
  * Save a office.
  *
  * @param {Request} req
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function save(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function save(req: Request, res: Response, next: NextFunction) {
   try {
     const office = await officeService.save(req.body);
 
@@ -87,11 +85,7 @@ export async function save(
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function update(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const office = await officeService.update(req.params.id, req.body);
 

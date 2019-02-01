@@ -26,8 +26,6 @@ export async function validateCategory(
   }
 }
 
-
-
 /**
  * Validate category Schema.
  *
@@ -42,7 +40,7 @@ export async function validateCategorySchema(
   next: NextFunction
 ) {
   try {
-    //const category = req.body;
+    // const category = req.body;
 
     next();
   } catch (error) {

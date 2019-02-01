@@ -14,22 +14,21 @@ router.get('/', foods.fetchAll);
 /**
  * GET /foods/:id
  */
-router.get('/:id',validateFood, foods.fetchById);
+router.get('/:id', validateFood, foods.fetchById);
 
 /**
  * GET /foods/category/:id
  */
-router.get('/category/:id',validateCategory, foods.fetchByCategoryId);
+router.get('/category/:id', validateCategory, foods.fetchByCategoryId);
 
 /**
  * POST /foods
  */
-router.post('/',validateFoodSchema, foods.save);
+router.post('/', validateFoodSchema, foods.save);
 
 /**
  * PUT /foods/:id
  */
-router.put('/:id',validateFood, foods.update);
-
+router.put('/:id', validateFood, foods.update);
 
 export default router;

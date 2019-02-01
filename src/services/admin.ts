@@ -5,44 +5,44 @@ import DataNotFoundError from '../errors/DataNotFoundError';
 /**
  * Fetch All Admins.
  */
-export async function fetchAll(): Promise<Array<Admin>> {
-  
-    try {
-
-        return await adminModel.fetch();
-    } catch (error) {
-        throw new Error(error);
-    }
+export async function fetchAll(): Promise<Admin[]> {
+  try {
+    return await adminModel.fetch();
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
  * Fetch by Id.
  */
 export async function fetchById(adminId: number): Promise<Admin> {
-  
-    try {
-
-        const [admin] = await adminModel.fetch(adminId);
-        if(!admin) throw new DataNotFoundError("Admin with this id not found.");
-        return admin;
-    } catch (error) {
-        throw error;
+  try {
+    const [admin] = await adminModel.fetch(adminId);
+    if (!admin) {
+      throw new DataNotFoundError('Admin with this id not found.');
     }
+
+    return admin;
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
  * Fetch by User Id.
  */
 export async function fetchByUserId(userId: number): Promise<Admin> {
-  
-    try {
-
-        const [admin] = await adminModel.fetchByUserId(userId);
-        if(!admin) throw new DataNotFoundError("User with this id is not an admin.");
-        return admin;
-    } catch (error) {
-        throw error;
+  try {
+    const [admin] = await adminModel.fetchByUserId(userId);
+    if (!admin) {
+      throw new DataNotFoundError('User with this id is not an admin.');
     }
+
+    return admin;
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
@@ -51,14 +51,13 @@ export async function fetchByUserId(userId: number): Promise<Admin> {
  * @param {Admin} admin
  */
 export async function save(admin: any) {
-  
-    try {
-        const [id] = await adminModel.save(admin);
+  try {
+    const [id] = await adminModel.save(admin);
 
-        return { id, ...admin };
-    } catch (error) {
-        throw new Error(error);
-    }
+    return { id, ...admin };
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
@@ -67,18 +66,14 @@ export async function save(admin: any) {
  * @param {number} adminId
  * @param {Admin} adminBody
  */
-export async function update(
-  adminId: number,
-  adminBody: Admin
-) {
-  
-    try {
-        await adminModel.update(adminId, adminBody);
+export async function update(adminId: number, adminBody: Admin) {
+  try {
+    await adminModel.update(adminId, adminBody);
 
-        return { id: adminId, ...adminBody };
-    } catch (error) {
-        throw new Error(error);
-    }
+    return { id: adminId, ...adminBody };
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
@@ -87,13 +82,11 @@ export async function update(
  * @param {number} adminId
  */
 export async function remove(adminId: number) {
-  
-    try {
-        await adminModel.remove(adminId);
+  try {
+    await adminModel.remove(adminId);
 
-        return { id: adminId };
-    } catch (error) {
-        throw new Error(error);
-    }
+    return { id: adminId };
+  } catch (error) {
+    throw error;
+  }
 }
-

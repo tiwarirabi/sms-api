@@ -13,14 +13,20 @@ export function up(knex: Knex) {
       .references('id')
       .inTable('categories')
       .notNullable();
-    table.string('name').unique().notNullable();
     table
-      .string('type',20)
+      .string('name')
+      .unique()
+      .notNullable();
+    table
+      .string('type', 20)
       .notNullable()
       .defaultTo('plate')
       .comment('plate, bowl, glass');
     table.text('price').notNullable();
-    table.boolean('is_veg').defaultTo(0).comment('0 or 1, 0 if false 1 if true');
+    table
+      .boolean('is_veg')
+      .defaultTo(0)
+      .comment('0 or 1, 0 if false 1 if true');
     table.text('remarks');
     table
       .integer('created_by')

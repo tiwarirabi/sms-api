@@ -15,7 +15,15 @@ export function up(knex: Knex) {
       .references('id')
       .inTable('users');
     table
-      .enu('role', ['all','accountant','receptionist','waiter','kitchen','hr','delivery_user'])
+      .enu('role', [
+        'all',
+        'accountant',
+        'receptionist',
+        'waiter',
+        'kitchen',
+        'hr',
+        'delivery_user'
+      ])
       .defaultTo('all')
       .notNullable();
     table
