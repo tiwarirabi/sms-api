@@ -4,7 +4,11 @@ import { Response, NextFunction } from 'express';
 import config from '../config/config';
 import * as authService from '../services/auth';
 import { AuthRequest } from '../domains/request/AuthRequest';
-// import * as userService from '../services/user';
+import { User } from '../domains/common/User';
+
+import * as objUtil from '../utils/object';
+
+import AuthForbiddenError from '../errors/auth/AuthForbiddenError';
 
 /**
  * generate and save the referesh token.
@@ -22,7 +26,7 @@ export async function generateToken(
     const JWT_SECRET = config.jwtSecret;
     let refreshToken = req.body.refreshToken ? req.body.refreshToken : false;
     let accessToken = '';
-    const user = req.user ? req.user : req.body.user;
+    const user: User = req.user ? req.user : req.body.user;
     const response = {
       user,
       refreshToken,
@@ -34,7 +38,8 @@ export async function generateToken(
 
     if (refreshToken) {
       // Create a new Access Token
-      accessToken = jwt.sign(user, JWT_SECRET, {
+      const adjustedUser = objUtil.withoutAttrs(user, ['iat', 'exp']);
+      accessToken = jwt.sign(adjustedUser, JWT_SECRET, {
         expiresIn: accessTokenExpiry
       });
 
@@ -58,11 +63,6 @@ export async function generateToken(
 
     res.json(response);
   } catch (error) {
-    const errorPayload = {
-      error,
-      status: 404
-    };
-
-    res.status(404).json({ errorPayload });
+    next(new AuthForbiddenError('Error'));
   }
 }

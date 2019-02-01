@@ -1,8 +1,15 @@
+import * as jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
+import config from '../config/config';
 import * as userService from '../services/user';
-import AuthError from '../errors/AuthError';
+
 import { AuthRequest } from '../domains/request/AuthRequest';
+import { User } from '../domains/common/User';
+
+import AuthForbiddenError from '../errors/auth/AuthForbiddenError';
+import AuthUnauthorizedError from '../errors/auth/AuthUnauthorizedError';
+import NotFoundError from '../errors/DataNotFoundError';
 
 /**
  * Validate users login.
@@ -18,8 +25,7 @@ export async function validateLogin(
   next: NextFunction
 ) {
   try {
-    const email = req.body.email;
-    const password = req.body.password;
+    const { body: { email = null, password = null } = {} } = req;
 
     const [user] = await userService.search({ email, password });
 
@@ -27,7 +33,7 @@ export async function validateLogin(
       (req as AuthRequest).user = user;
       next();
     } else {
-      throw new AuthError('Username/Password mismatch.');
+      throw new NotFoundError('Username/Password mismatch.');
     }
   } catch (error) {
     return next(error);
@@ -42,16 +48,67 @@ export async function validateLogin(
  * @param  {NextFunction} next
  * @returns {Promise}
  */
-export async function validateToken(
+export async function validateAccessToken(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  try {
-    // const token = req.body;
+  const {
+    headers: { authorization }
+  } = req;
 
-    next();
-  } catch (error) {
-    next(error);
+  let accessToken = null;
+
+  if (
+    authorization &&
+    authorization.split(' ')[0] === 'Bearer' &&
+    authorization.split(' ')[1] !== undefined
+  ) {
+    accessToken = authorization.split(' ')[1];
+  }
+
+  if (!accessToken) {
+    next(new AuthForbiddenError('Access Token Not Set'));
+  } else {
+    try {
+      const decoded = jwt.verify(accessToken, config.jwtSecret);
+      const user = decoded as User;
+      (req as AuthRequest).user = user;
+
+      next();
+    } catch (error) {
+      next(new AuthUnauthorizedError('Access Token invalid'));
+    }
+  }
+}
+
+/**
+ * Validate user refresh token.
+ *
+ * @param  {Request}   req
+ * @param  {Response}   res
+ * @param  {NextFunction} next
+ * @returns {Promise}
+ */
+export async function validateRefreshToken(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { body: { refreshToken = null } = {} } = req;
+
+  if (!refreshToken) {
+    next(new AuthForbiddenError('Refresh Token Not Set'));
+  } else {
+    try {
+      const decoded = jwt.verify(refreshToken, config.jwtSecret);
+      const user = decoded as User;
+
+      (req as AuthRequest).user = user;
+
+      next();
+    } catch (error) {
+      next(new AuthUnauthorizedError('Refresh Token invalid'));
+    }
   }
 }

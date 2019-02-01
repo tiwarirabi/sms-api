@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import config from './config/config';
+
 import AuthRouter from './routes/auth';
 import UserRouter from './routes/user';
 import AdminRouter from './routes/admin';
@@ -8,6 +9,9 @@ import OfficeRouter from './routes/office';
 import EmployeeRouter from './routes/employee';
 import CategoryRouter from './routes/category';
 import FoodRouter from './routes/food';
+
+import { validateAccessToken } from './validators/auth';
+import * as routeTokenValidators from './validators/routeTokenValidators';
 
 const router = Router();
 
@@ -28,33 +32,64 @@ router.get('/info', (req, res) => {
 router.use('/auth', AuthRouter);
 
 /**
- * GET /users
- */
-router.use('/users', UserRouter);
-
-/**
- * GET /admin
- */
-router.use('/admins', AdminRouter);
-
-/**
- * GET /office
- */
-router.use('/offices', OfficeRouter);
-
-/**
- * GET /employees
- */
-router.use('/employees', EmployeeRouter);
-
-/**
  * GET /categories
  */
-router.use('/categories', CategoryRouter);
+router.use(
+  '/categories',
+  validateAccessToken,
+  routeTokenValidators.userRouteValidator,
+  CategoryRouter
+);
 
 /**
  * GET /foods
  */
-router.use('/foods', FoodRouter);
+router.use(
+  '/foods',
+  validateAccessToken,
+  routeTokenValidators.userRouteValidator,
+  FoodRouter
+);
+
+/**
+ * GET /users
+ */
+router.use(
+  '/users',
+  validateAccessToken,
+  routeTokenValidators.userRouteValidator,
+  UserRouter
+);
+
+/**
+ * GET /employees
+ */
+router.use(
+  '/employees',
+  validateAccessToken,
+  routeTokenValidators.userRouteValidator,
+  EmployeeRouter
+);
+
+/**
+ * GET /office
+ */
+router.use(
+  '/offices',
+  validateAccessToken,
+  routeTokenValidators.userRouteValidator,
+  OfficeRouter
+);
+
+/**
+ * GET /admin
+ */
+
+router.use(
+  '/admins',
+  validateAccessToken,
+  routeTokenValidators.adminRouteValidator,
+  AdminRouter
+);
 
 export default router;
