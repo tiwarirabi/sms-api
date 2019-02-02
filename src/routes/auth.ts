@@ -15,4 +15,9 @@ router.post('/', validateLogin, generateToken);
  */
 router.post('/token', validateRefreshToken, generateToken);
 
+/**
+ * POST /auth/signup
+ */
+// router.post('/signup', user.save);
+
 export default router;
