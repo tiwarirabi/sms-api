@@ -51,13 +51,13 @@ export async function save(user: any) {
   try {
     const codeLength = 6;
 
-    const mobileCode = await randomCode(codeLength);
-    const emailCode = await randomCode(codeLength);
+    const mobileCode = randomCode(codeLength);
+    const emailCode = randomCode(codeLength);
 
     const newUser = {
+      ...user,
       emailVerificationCode: emailCode,
-      mobileVerificationCode: mobileCode,
-      ...user
+      mobileVerificationCode: mobileCode
     };
     const [id] = await userModel.save(newUser);
 

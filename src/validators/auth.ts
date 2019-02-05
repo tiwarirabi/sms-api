@@ -10,7 +10,7 @@ import { User } from '../domains/common/User';
 import AuthForbiddenError from '../errors/auth/AuthForbiddenError';
 import AuthUnauthorizedError from '../errors/auth/AuthUnauthorizedError';
 import NotFoundError from '../errors/DataNotFoundError';
-import databaseError from '../errors/DatabaseError';
+import DatabaseError from '../errors/DatabaseError';
 
 /**
  * Validate users login.
@@ -131,8 +131,13 @@ export async function checkUser(
     const mobile = req.body.mobile;
     const email = req.body.email;
 
-    const [userMobile] = await userService.search({ mobile });
-    const [userEmail] = await userService.search({ email });
+    const userMobilePromise = userService.search({ mobile });
+    const userEmailPromise = userService.search({ email });
+
+    const [[userMobile], [userEmail]] = await Promise.all([
+      userMobilePromise,
+      userEmailPromise
+    ]);
 
     if (!userMobile && !userEmail) {
       next();
@@ -150,7 +155,7 @@ export async function checkUser(
 
       errorString += 'already exists';
 
-      throw new databaseError('Already regisered', errorString);
+      throw new DatabaseError('Already regisered', errorString);
     }
   } catch (error) {
     return next(error);
