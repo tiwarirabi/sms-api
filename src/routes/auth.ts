@@ -1,7 +1,13 @@
 import { Router } from 'express';
 
 import { generateToken } from '../controllers/auth';
-import { validateLogin, validateRefreshToken } from '../validators/auth';
+import {
+  validateLogin,
+  validateRefreshToken,
+  checkUser
+} from '../validators/auth';
+
+import * as users from '../controllers/users';
 
 const router = Router();
 
@@ -16,8 +22,8 @@ router.post('/', validateLogin, generateToken);
 router.post('/token', validateRefreshToken, generateToken);
 
 /**
- * POST /auth/signup
+ * POST /signup
  */
-// router.post('/signup', user.save);
+router.post('/signup', checkUser, users.save);
 
 export default router;

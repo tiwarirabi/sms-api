@@ -10,6 +10,7 @@ import { User } from '../domains/common/User';
 import AuthForbiddenError from '../errors/auth/AuthForbiddenError';
 import AuthUnauthorizedError from '../errors/auth/AuthUnauthorizedError';
 import NotFoundError from '../errors/DataNotFoundError';
+import databaseError from '../errors/DatabaseError';
 
 /**
  * Validate users login.
@@ -110,5 +111,48 @@ export async function validateRefreshToken(
     } catch (error) {
       next(new AuthUnauthorizedError('Refresh Token invalid'));
     }
+  }
+}
+
+/**
+ * check for existing user
+ *
+ * @param  {Request}   req
+ * @param  {Response}   res
+ * @param  {NextFunction} next
+ * @returns {Promise}
+ */
+export async function checkUser(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const mobile = req.body.mobile;
+    const email = req.body.email;
+
+    const [userMobile] = await userService.search({ mobile });
+    const [userEmail] = await userService.search({ email });
+
+    if (!userMobile && !userEmail) {
+      next();
+    } else {
+      let errorString = '';
+
+      if (userMobile) {
+        errorString += `${mobile} `;
+      }
+      if (userMobile && userEmail) {
+        errorString += `& ${email} `;
+      } else if (userEmail) {
+        errorString += `${email} `;
+      }
+
+      errorString += 'already exists';
+
+      throw new databaseError('Already regisered', errorString);
+    }
+  } catch (error) {
+    return next(error);
   }
 }

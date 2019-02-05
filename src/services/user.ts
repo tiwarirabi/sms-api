@@ -2,6 +2,8 @@ import { User } from '../domains/common/User';
 import * as userModel from '../models/user';
 import DataNotFoundError from '../errors/DataNotFoundError';
 
+import randomCode from '../utils/randomcode';
+
 /**
  * Fetch All Users.
  */
@@ -47,7 +49,17 @@ export async function fetchById(userId: number): Promise<User> {
  */
 export async function save(user: any) {
   try {
-    const [id] = await userModel.save(user);
+    const codeLength = 6;
+
+    const mobileCode = await randomCode(codeLength);
+    const emailCode = await randomCode(codeLength);
+
+    const newUser = {
+      emailVerificationCode: emailCode,
+      mobileVerificationCode: mobileCode,
+      ...user
+    };
+    const [id] = await userModel.save(newUser);
 
     return { id, ...user };
   } catch (error) {
