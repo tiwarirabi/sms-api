@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import config from '../config/config';
 import * as userService from '../services/user';
+import * as authService from '../services/auth';
 
 import { AuthRequest } from '../domains/request/AuthRequest';
 import { User } from '../domains/common/User';
@@ -102,7 +103,22 @@ export async function validateRefreshToken(
   } else {
     try {
       const decoded = jwt.verify(refreshToken, config.jwtSecret);
+
       const user = decoded as User;
+
+      // check if refresh token is in the database and is not set to expired
+      const dbToken = {
+        userId: user.id,
+        token: refreshToken,
+        hasExpired: 0
+      };
+      const userDbToken = dbToken
+        ? await authService.validateTokenInDatabase(dbToken)
+        : false;
+
+      if (!userDbToken || userDbToken.length <= 0) {
+        throw new Error();
+      }
 
       (req as AuthRequest).user = user;
 

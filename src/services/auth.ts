@@ -5,9 +5,17 @@ import * as tokenModel from '../models/token';
  *
  * @param {string} refreshToken
  */
-export async function storeToken(refreshToken: string, userId: number) {
+export async function storeToken(dbToken: any) {
   try {
-    return tokenModel.save(refreshToken, userId);
+    return tokenModel.save(dbToken);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function validateTokenInDatabase(dbToken: any) {
+  try {
+    return tokenModel.fetch(dbToken);
   } catch (error) {
     throw error;
   }
