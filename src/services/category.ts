@@ -2,7 +2,7 @@ import { Food } from '../domains/food';
 import * as foodModel from '../models/food';
 import { Category } from '../domains/category';
 import * as categoryModel from '../models/category';
-import DataNotFoundError from '../errors/DataNotFoundError';
+import NotFoundError from '../errors/NotFoundError';
 
 /**
  * Fetch All categories.
@@ -45,7 +45,7 @@ export async function fetchById(categoryId: number): Promise<Category> {
       foodPromise
     ]);
     if (!category) {
-      throw new DataNotFoundError('category with this id not found.');
+      throw new NotFoundError('category with this id not found.');
     }
     category.foods = [...foods];
 

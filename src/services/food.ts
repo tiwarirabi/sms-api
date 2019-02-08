@@ -1,6 +1,6 @@
 import * as foodModel from '../models/food';
 import { Food } from '../domains/food';
-import DataNotFoundError from '../errors/DataNotFoundError';
+import NotFoundError from '../errors/NotFoundError';
 
 /**
  * Fetch All categories.
@@ -20,7 +20,7 @@ export async function fetchById(foodId: number): Promise<Food> {
   try {
     const [food] = await foodModel.fetch(foodId);
     if (!food) {
-      throw new DataNotFoundError('Food with this id not found.');
+      throw new NotFoundError('Food with this id not found.');
     }
 
     return food;
@@ -36,7 +36,7 @@ export async function fetchByCategoryId(categoryId: number): Promise<Food[]> {
   try {
     const foods = await foodModel.fetchByCategoryId(categoryId);
     if (!foods || foods.length <= 0) {
-      throw new DataNotFoundError('Food with this id not found.');
+      throw new NotFoundError('Food with this id not found.');
     }
 
     return foods;

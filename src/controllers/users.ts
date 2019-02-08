@@ -1,15 +1,20 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+import { AuthRequest } from '../domains/request/AuthRequest';
 
 import * as userService from '../services/user';
 
 /**
  * Search using paams or fetch all if no params.
  *
- * @param {Request} req
+ * @param {AuthRequest} req
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function fetchAll(req: Request, res: Response, next: NextFunction) {
+export async function fetchAll(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) {
   const allUsers = await userService.fetchAll();
 
   res.json(allUsers);
@@ -18,12 +23,12 @@ export async function fetchAll(req: Request, res: Response, next: NextFunction) 
 /**
  * Fetch single user using id.
  *
- * @param {Request} req
+ * @param {AuthRequest} req
  * @param {Response} res
  * @param {NextFunction} next
  */
 export async function fetchById(
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) {
@@ -39,17 +44,21 @@ export async function fetchById(
 /**
  * Save a user.
  *
- * @param {Request} req
+ * @param {AuthRequest} req
  * @param {Response} res
  * @param {NextFunction} next
  */
 export async function save(
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) {
   try {
-    const user = await userService.save(req.body);
+    const newUser = req.body;
+
+    newUser.createdBy = req.user;
+
+    const user = await userService.save(newUser);
 
     res.json(user);
   } catch (error) {
@@ -60,12 +69,12 @@ export async function save(
 /**
  * Update a user.
  *
- * @param {Request} req
+ * @param {AuthRequest} req
  * @param {Response} res
  * @param {NextFunction} next
  */
 export async function update(
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) {

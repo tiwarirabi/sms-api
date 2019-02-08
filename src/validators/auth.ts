@@ -9,8 +9,8 @@ import { User } from '../domains/common/User';
 
 import AuthForbiddenError from '../errors/auth/AuthForbiddenError';
 import AuthUnauthorizedError from '../errors/auth/AuthUnauthorizedError';
-import NotFoundError from '../errors/DataNotFoundError';
-import DatabaseError from '../errors/DatabaseError';
+import NotFoundError from '../errors/NotFoundError';
+import DataDuplicateError from '../errors/DataDuplicateError';
 
 /**
  * Validate users login.
@@ -122,14 +122,13 @@ export async function validateRefreshToken(
  * @param  {NextFunction} next
  * @returns {Promise}
  */
-export async function checkUser(
+export async function validateUserDoNotExist(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    const mobile = req.body.mobile;
-    const email = req.body.email;
+    const { body: { email, mobile } = null } = req;
 
     const userMobilePromise = userService.search({ mobile });
     const userEmailPromise = userService.search({ email });
@@ -142,20 +141,19 @@ export async function checkUser(
     if (!userMobile && !userEmail) {
       next();
     } else {
-      let errorString = '';
+      const errorPayload = {
+        mobile: '',
+        email: ''
+      };
 
       if (userMobile) {
-        errorString += `${mobile} `;
+        errorPayload.mobile = 'User with this Mobile is already registered.';
       }
-      if (userMobile && userEmail) {
-        errorString += `& ${email} `;
-      } else if (userEmail) {
-        errorString += `${email} `;
+      if (userEmail) {
+        errorPayload.email = 'User with this Email is already registered.';
       }
 
-      errorString += 'already exists';
-
-      throw new DatabaseError('Already regisered', errorString);
+      throw new DataDuplicateError('Already regisered', errorPayload);
     }
   } catch (error) {
     return next(error);

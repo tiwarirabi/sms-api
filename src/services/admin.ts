@@ -1,6 +1,6 @@
 import { Admin } from '../domains/admin';
 import * as adminModel from '../models/admin';
-import DataNotFoundError from '../errors/DataNotFoundError';
+import NotFoundError from '../errors/NotFoundError';
 
 /**
  * Fetch All Admins.
@@ -20,7 +20,7 @@ export async function fetchById(adminId: number): Promise<Admin> {
   try {
     const [admin] = await adminModel.fetch(adminId);
     if (!admin) {
-      throw new DataNotFoundError('Admin with this id not found.');
+      throw new NotFoundError('Admin with this id not found.');
     }
 
     return admin;
@@ -36,7 +36,7 @@ export async function fetchByUserId(userId: number): Promise<Admin> {
   try {
     const [admin] = await adminModel.fetchByUserId(userId);
     if (!admin) {
-      throw new DataNotFoundError('User with this id is not an admin.');
+      throw new NotFoundError('User with this id is not an admin.');
     }
 
     return admin;
