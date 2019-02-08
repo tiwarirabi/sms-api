@@ -20,3 +20,15 @@ export async function validateTokenInDatabase(dbToken: any) {
     throw error;
   }
 }
+
+export async function expireTokenInDatabase(dbToken: any) {
+  try {
+    const updateColumn = {
+      hasExpired: 1
+    };
+
+    return tokenModel.update(dbToken, updateColumn);
+  } catch (error) {
+    throw error;
+  }
+}

@@ -33,8 +33,8 @@ export async function generateToken(
       accessToken
     };
 
-    const accessTokenExpiry = 60; // 1 hour
-    const refreshTokenExpiry = 120;
+    const accessTokenExpiry = 60 * 2; // 2 mins
+    const refreshTokenExpiry = '7d'; // 7 days
 
     if (refreshToken) {
       // Create a new Access Token

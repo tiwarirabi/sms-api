@@ -25,3 +25,16 @@ export async function save(dbToken: any, tx?: Knex) {
       hasExpired: 0
     });
 }
+
+/**
+ * Update the refresh token in the database.
+ *
+ * @param {any} dbToken
+ * @param {any} updateParams
+ */
+export async function update(dbToken: any, updateParams: any, tx?: Knex) {
+  return db
+    .connection(tx)(TOKEN_TABLE)
+    .update(updateParams)
+    .where(dbToken);
+}

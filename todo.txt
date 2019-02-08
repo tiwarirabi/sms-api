@@ -6,7 +6,7 @@ BACKEND
 
 	merge to master
 
-	2) (working on it, branch: token-db-save) after login when we generate new token, if a new refresh token is being created, save it in the database using tokenService
+	2) (done, branch: token-db-save) after login when we generate new token, if a new refresh token is being created, save it in the database using tokenService
 
 	when validating refresh token, first validate if the isExpired is true or false, 
 		if isExpired is false
@@ -17,20 +17,6 @@ BACKEND
 					create new refresh token and access token
 		if isExpired is true
 			respond with a AuthForbiddenError
-
-
-	
-		Lat Commit bug : 
-
-			How to Recreate ?
-				TRUNCATE TABLE token;
-				Login to auth/
-				check if the access token has expired in 60 seconds
-				if the accessTooken has expired 
-				request new access token using the refreshToken in auth/token
-				we get an refresh token invalid error even if it hasn't been time for refreshToken expiry.
-				database also doesn't have hasExpired === 1;
-				
 
 	merge to master 
 
