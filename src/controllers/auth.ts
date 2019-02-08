@@ -33,8 +33,8 @@ export async function generateToken(
       accessToken
     };
 
-    const accessTokenExpiry = 60 * 60; // 1 hour
-    const refreshTokenExpiry = '7d';
+    const accessTokenExpiry = 60 * 2; // 2 mins
+    const refreshTokenExpiry = '7d'; // 7 days
 
     if (refreshToken) {
       // Create a new Access Token
@@ -47,15 +47,27 @@ export async function generateToken(
     } else if (user && user.id) {
       // Create a new Refresh and Access Token
       // Store the refresh token in the database
+      // Removing unwanted properties
+      const adjustedUser = objUtil.withoutAttrs(user, ['iat', 'exp']);
 
-      refreshToken = jwt.sign(user, JWT_SECRET, {
+      refreshToken = jwt.sign(adjustedUser, JWT_SECRET, {
         expiresIn: refreshTokenExpiry
       });
-      accessToken = jwt.sign(user, JWT_SECRET, {
+
+      accessToken = jwt.sign(adjustedUser, JWT_SECRET, {
         expiresIn: accessTokenExpiry
       });
 
-      await authService.storeToken(refreshToken, user.id);
+      const { headers } = req;
+      const userAgent = headers['user-agent'];
+
+      const dbToken = {
+        token: refreshToken,
+        device: userAgent,
+        userId: user.id
+      };
+
+      await authService.storeToken(dbToken);
 
       response.refreshToken = refreshToken;
       response.accessToken = accessToken;

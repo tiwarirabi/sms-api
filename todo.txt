@@ -6,7 +6,7 @@ BACKEND
 
 	merge to master
 
-	2) after login when we generate new token, if a new refresh token is being created, save it in the database using tokenService
+	2) (done, branch: token-db-save) after login when we generate new token, if a new refresh token is being created, save it in the database using tokenService
 
 	when validating refresh token, first validate if the isExpired is true or false, 
 		if isExpired is false

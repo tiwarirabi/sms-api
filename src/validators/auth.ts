@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import config from '../config/config';
 import * as userService from '../services/user';
+import * as authService from '../services/auth';
 
 import { AuthRequest } from '../domains/request/AuthRequest';
 import { User } from '../domains/common/User';
@@ -100,14 +101,49 @@ export async function validateRefreshToken(
   if (!refreshToken) {
     next(new AuthForbiddenError('Refresh Token Not Set'));
   } else {
+    // Checking if the token hass valid signature in it
     try {
-      const decoded = jwt.verify(refreshToken, config.jwtSecret);
-      const user = decoded as User;
+      jwt.decode(refreshToken);
+    } catch (error) {
+      next(new AuthUnauthorizedError('Refresh Token Signature Invalid.'));
+    }
+
+    try {
+      const decodedRefreshToken = jwt.verify(refreshToken, config.jwtSecret);
+
+      const user = decodedRefreshToken as User;
+
+      // check if refresh token is in the database and is not set to expired
+      const dbToken = {
+        userId: user.id,
+        token: refreshToken,
+        hasExpired: 0
+      };
+      const userDbToken = dbToken.userId
+        ? await authService.validateTokenInDatabase(dbToken)
+        : false;
+
+      if (!userDbToken || userDbToken.length <= 0) {
+        // If not in database
+        // If database's token has already has_exoired == 1
+        // throw error
+        throw new Error();
+      }
 
       (req as AuthRequest).user = user;
 
       next();
     } catch (error) {
+      // Set hasExpired == true in database for that token and throw error
+      const user = jwt.decode(refreshToken) as User;
+
+      const dbTokenToExpire = {
+        userId: user.id,
+        token: refreshToken
+      };
+
+      await authService.expireTokenInDatabase(dbTokenToExpire);
+
       next(new AuthUnauthorizedError('Refresh Token invalid'));
     }
   }

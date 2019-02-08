@@ -14,13 +14,15 @@ export function up(knex: Knex) {
       .inTable('users')
       .notNullable();
     table.text('token').notNullable();
-    table.boolean('has_expired').notNullable();
+    table
+      .boolean('has_expired')
+      .notNullable()
+      .defaultTo(0);
     table.string('device').notNullable();
     table
       .dateTime('created_at')
       .notNullable()
       .defaultTo(knex.raw('now()'));
-    table.unique(['user_id', 'token']);
   });
 }
 
