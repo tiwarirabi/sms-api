@@ -12,6 +12,9 @@ BACKEND
 
 	merge to master
 
+
+	merge 1 and 2 to dev.
+
 	user session log // Ask with pawan dai if the folowing sql query works or not.
 				select * from users as 'users1' LEFT JOIN users as 'users21 where 						users1.created_at - users2.created_at > 1;
 	api request log
