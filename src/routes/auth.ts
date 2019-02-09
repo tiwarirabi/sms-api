@@ -7,21 +7,32 @@ import {
   validateUserDoNotExist
 } from '../validators/auth';
 
+import {
+  validateSignInSchema,
+  validateSignUpSchema,
+  validateNewTokenSchema
+} from '../validators/request/auth';
+
 const router = Router();
 
 /**
  * POST /auth
  */
-router.post('/', validateLogin, generateToken);
+router.post('/', validateSignInSchema, validateLogin, generateToken);
 
 /**
  * POST /auth/token
  */
-router.post('/token', validateRefreshToken, generateToken);
+router.post(
+  '/token',
+  validateNewTokenSchema,
+  validateRefreshToken,
+  generateToken
+);
 
 /**
  * POST /signup
  */
-router.post('/signup', validateUserDoNotExist, signup);
+router.post('/signup', validateSignUpSchema, validateUserDoNotExist, signup);
 
 export default router;
