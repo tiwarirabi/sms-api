@@ -13,6 +13,7 @@ export const SignUpSchema = Joi.object({
     .optional()
     .allow(null),
   lastName: Joi.string().required(),
+  mobile: Joi.string().required(),
   gender: Joi.string()
     .required()
     .valid('male', 'female', 'other')
