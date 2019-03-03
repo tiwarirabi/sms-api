@@ -10,8 +10,8 @@ import { User } from '../domains/common/User';
 
 import AuthForbiddenError from '../errors/auth/AuthForbiddenError';
 import AuthUnauthorizedError from '../errors/auth/AuthUnauthorizedError';
-import NotFoundError from '../errors/NotFoundError';
 import DataDuplicateError from '../errors/DataDuplicateError';
+import BadRequestError from '../errors/BadRequestError';
 
 /**
  * Validate users login.
@@ -35,7 +35,7 @@ export async function validateLogin(
       (req as AuthRequest).user = user;
       next();
     } else {
-      throw new NotFoundError('Username/Password mismatch.');
+      throw new BadRequestError('Email/Password mismatch.');
     }
   } catch (error) {
     return next(error);
