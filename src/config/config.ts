@@ -11,7 +11,8 @@ const config = {
     description: (pkg as any).description,
     host: process.env.APP_HOST,
     baseUrl: process.env.API_BASE_URL,
-    port: PORT
+    port: PORT,
+    uploadDir: process.env.UPLOAD_DIR
   },
   logging: {
     path: process.env.LOGGING_DIR || 'logs',

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as formidableMiddleware from 'express-formidable';
 
 import * as image from '../controllers/image';
+import config from '../config/config';
 
 const router = Router();
 
@@ -16,7 +17,7 @@ router.get('/:fileName', image.fetch);
 router.post(
   '/',
   formidableMiddleware({
-    uploadDir: './src/uploads/'
+    uploadDir: `./${config.app.uploadDir}`
   }),
   image.upload
 );

@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import config from '../config/config';
+
 /**
- * Search using paams or fetch all if no params.
  *
  * @param {Request} req
  * @param {Response} res
@@ -18,7 +18,6 @@ export async function upload(req: any, res: Response, next: NextFunction) {
 }
 
 /**
- * Search using paams or fetch all if no params.
  *
  * @param {Request} req
  * @param {Response} res
@@ -28,7 +27,7 @@ export async function fetch(req: any, res: Response, next: NextFunction) {
   const { fileName } = req.params;
 
   const options = {
-    root: __dirname + '/../uploads/',
+    root: `${__dirname}/../../${config.app.uploadDir}/`,
     dotfiles: 'deny',
     headers: {
       'x-timestamp': Date.now(),
