@@ -9,6 +9,7 @@ import OfficeRouter from './routes/office';
 import EmployeeRouter from './routes/employee';
 import CategoryRouter from './routes/category';
 import FoodRouter from './routes/food';
+import ImageRouter from './routes/image';
 
 import { validateAccessToken } from './validators/auth';
 import * as routeTokenValidators from './validators/routeTokenValidators';
@@ -16,7 +17,7 @@ import * as routeTokenValidators from './validators/routeTokenValidators';
 const router = Router();
 
 /**
- * GET /info
+ * /info
  */
 router.get('/info', (req, res) => {
   res.json({
@@ -27,12 +28,17 @@ router.get('/info', (req, res) => {
 });
 
 /**
- * GET /auth
+ *  /image
+ */
+router.use('/image', ImageRouter);
+
+/**
+ * /auth
  */
 router.use('/auth', AuthRouter);
 
 /**
- * GET /categories
+ * /categories
  */
 router.use(
   '/categories',
@@ -42,7 +48,7 @@ router.use(
 );
 
 /**
- * GET /foods
+ * /foods
  */
 router.use(
   '/foods',
@@ -52,7 +58,7 @@ router.use(
 );
 
 /**
- * GET /users
+ * /users
  */
 router.use(
   '/users',
@@ -62,7 +68,7 @@ router.use(
 );
 
 /**
- * GET /employees
+ * /employees
  */
 router.use(
   '/employees',
@@ -72,7 +78,7 @@ router.use(
 );
 
 /**
- * GET /office
+ * /office
  */
 router.use(
   '/offices',
@@ -82,7 +88,7 @@ router.use(
 );
 
 /**
- * GET /admin
+ * /admin
  */
 
 router.use(

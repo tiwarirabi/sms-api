@@ -68,3 +68,7 @@ typings/
 
 *.pyc
 __pycache__
+
+
+#Image Uploads
+src/uploads/

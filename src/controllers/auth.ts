@@ -46,7 +46,7 @@ export async function generateToken(
       accessToken
     };
 
-    const accessTokenExpiry = 60 * 2; // 2 mins
+    const accessTokenExpiry = 60 * 60; // 1 hrs
     const refreshTokenExpiry = '7d'; // 7 days
 
     if (refreshToken) {

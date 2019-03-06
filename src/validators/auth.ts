@@ -22,7 +22,7 @@ import BadRequestError from '../errors/BadRequestError';
  * @returns {Promise}
  */
 export async function validateLogin(
-  req: Request,
+  req: any,
   res: Response,
   next: NextFunction
 ) {

@@ -19,8 +19,10 @@ export async function fetchAll(): Promise<Category[]> {
     return categories.map((category: Category) => ({
       ...category,
       foods:
-        foods.length > 0 && foods[0].length > 0
-          ? foods.filter(([food]: Food[]) => food.categoryId === category.id)[0]
+        foods && foods.length > 0 && foods[0].length > 0
+          ? foods.filter(
+              ([food]: Food[]) => food && food.categoryId === category.id
+            )[0]
           : []
     }));
   } catch (error) {
