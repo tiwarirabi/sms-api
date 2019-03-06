@@ -1,7 +1,7 @@
 import { Office } from '../domains/office';
 import * as officeModel from '../models/office';
 import * as industriesModel from '../models/industry';
-import DataNotFoundError from '../errors/DataNotFoundError';
+import NotFoundError from '../errors/NotFoundError';
 
 /**
  * Fetch All Office.
@@ -22,7 +22,7 @@ export async function fetchById(officeId: number): Promise<Office> {
     const [office] = await officeModel.fetch(officeId);
 
     if (!office) {
-      throw new DataNotFoundError('Office with this id not found.');
+      throw new NotFoundError('Office with this id not found.');
     }
 
     const industries = await industriesModel.fetchByOfficeId(office.id);
@@ -42,7 +42,7 @@ export async function fetchByUserId(userId: number): Promise<Office> {
   try {
     const [office] = await officeModel.fetchByUserId(userId);
     if (!office) {
-      throw new DataNotFoundError('User with this id is not an office.');
+      throw new NotFoundError('User with this id is not an office.');
     }
 
     return office;

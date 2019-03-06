@@ -1,14 +1,27 @@
 import * as jwt from 'jsonwebtoken';
-import { Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import config from '../config/config';
 import * as authService from '../services/auth';
+import * as userService from '../services/user';
 import { AuthRequest } from '../domains/request/AuthRequest';
 import { User } from '../domains/common/User';
 
 import * as objUtil from '../utils/object';
 
 import AuthForbiddenError from '../errors/auth/AuthForbiddenError';
+
+export async function signup(req: Request, res: Response, next: NextFunction) {
+  try {
+    const newUser = req.body;
+
+    const user = await userService.save(newUser);
+
+    res.json(user);
+  } catch (error) {
+    throw error;
+  }
+}
 
 /**
  * generate and save the referesh token.
@@ -33,7 +46,7 @@ export async function generateToken(
       accessToken
     };
 
-    const accessTokenExpiry = 60 * 2; // 2 mins
+    const accessTokenExpiry = 60 * 60; // 1 hrs
     const refreshTokenExpiry = '7d'; // 7 days
 
     if (refreshToken) {

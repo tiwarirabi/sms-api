@@ -10,7 +10,8 @@ import { User } from '../domains/common/User';
 
 import AuthForbiddenError from '../errors/auth/AuthForbiddenError';
 import AuthUnauthorizedError from '../errors/auth/AuthUnauthorizedError';
-import NotFoundError from '../errors/DataNotFoundError';
+import DataDuplicateError from '../errors/DataDuplicateError';
+import BadRequestError from '../errors/BadRequestError';
 
 /**
  * Validate users login.
@@ -21,7 +22,7 @@ import NotFoundError from '../errors/DataNotFoundError';
  * @returns {Promise}
  */
 export async function validateLogin(
-  req: Request,
+  req: any,
   res: Response,
   next: NextFunction
 ) {
@@ -34,7 +35,7 @@ export async function validateLogin(
       (req as AuthRequest).user = user;
       next();
     } else {
-      throw new NotFoundError('Username/Password mismatch.');
+      throw new BadRequestError('Email/Password mismatch.');
     }
   } catch (error) {
     return next(error);
@@ -146,5 +147,51 @@ export async function validateRefreshToken(
 
       next(new AuthUnauthorizedError('Refresh Token invalid'));
     }
+  }
+}
+
+/**
+ * check for existing user
+ *
+ * @param  {Request}   req
+ * @param  {Response}   res
+ * @param  {NextFunction} next
+ * @returns {Promise}
+ */
+export async function validateUserDoNotExist(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { body: { email, mobile } = null } = req;
+
+    const userMobilePromise = userService.search({ mobile });
+    const userEmailPromise = userService.search({ email });
+
+    const [[userMobile], [userEmail]] = await Promise.all([
+      userMobilePromise,
+      userEmailPromise
+    ]);
+
+    if (!userMobile && !userEmail) {
+      next();
+    } else {
+      const errorPayload = {
+        mobile: '',
+        email: ''
+      };
+
+      if (userMobile) {
+        errorPayload.mobile = 'User with this Mobile is already registered.';
+      }
+      if (userEmail) {
+        errorPayload.email = 'User with this Email is already registered.';
+      }
+
+      throw new DataDuplicateError('Already regisered', errorPayload);
+    }
+  } catch (error) {
+    return next(error);
   }
 }

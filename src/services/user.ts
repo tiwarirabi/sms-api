@@ -1,6 +1,8 @@
 import { User } from '../domains/common/User';
 import * as userModel from '../models/user';
-import DataNotFoundError from '../errors/DataNotFoundError';
+import NotFoundError from '../errors/NotFoundError';
+
+import randomCode from '../utils/randomcode';
 
 /**
  * Fetch All Users.
@@ -31,7 +33,7 @@ export async function fetchById(userId: number): Promise<User> {
   try {
     const [user] = await userModel.fetch(userId);
     if (!user) {
-      throw new DataNotFoundError('User with this id not found.');
+      throw new NotFoundError('User with this id not found.');
     }
 
     return user;
@@ -45,9 +47,19 @@ export async function fetchById(userId: number): Promise<User> {
  *
  * @param {user} user
  */
-export async function save(user: any) {
+export async function save(user: User) {
   try {
-    const [id] = await userModel.save(user);
+    const codeLength = 6;
+
+    const mobileCode = randomCode(codeLength);
+    const emailCode = randomCode(codeLength);
+
+    const newUser = {
+      ...user,
+      emailVerificationCode: emailCode,
+      mobileVerificationCode: mobileCode
+    };
+    const [id] = await userModel.save(newUser);
 
     return { id, ...user };
   } catch (error) {

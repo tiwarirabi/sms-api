@@ -88,6 +88,14 @@ export async function search(params: any, tx?: Knex): Promise<User[]> {
  * @param {knex} tx
  */
 export function save(user: User, tx?: Knex) {
+  // if created by is set from users controller use that
+  // if it's from auth, there will not be any created by, so use the default super admin for that
+  if (user.createdBy) {
+    (user as any).createdBy = user.createdBy ? user.createdBy.id : 1;
+  } else if (!user.createdBy) {
+    (user as any).createdBy = 1;
+  }
+
   return db
     .connection(tx)(USER_TABLE)
     .insert(user);

@@ -2,7 +2,7 @@ import { Food } from '../domains/food';
 import * as foodModel from '../models/food';
 import { Category } from '../domains/category';
 import * as categoryModel from '../models/category';
-import DataNotFoundError from '../errors/DataNotFoundError';
+import NotFoundError from '../errors/NotFoundError';
 
 /**
  * Fetch All categories.
@@ -19,8 +19,10 @@ export async function fetchAll(): Promise<Category[]> {
     return categories.map((category: Category) => ({
       ...category,
       foods:
-        foods.length > 0 && foods[0].length > 0
-          ? foods.filter(([food]: Food[]) => food.categoryId === category.id)[0]
+        foods && foods.length > 0 && foods[0].length > 0
+          ? foods.filter(
+              ([food]: Food[]) => food && food.categoryId === category.id
+            )[0]
           : []
     }));
   } catch (error) {
@@ -45,7 +47,7 @@ export async function fetchById(categoryId: number): Promise<Category> {
       foodPromise
     ]);
     if (!category) {
-      throw new DataNotFoundError('category with this id not found.');
+      throw new NotFoundError('category with this id not found.');
     }
     category.foods = [...foods];
 

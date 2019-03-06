@@ -1,6 +1,6 @@
 import { Employee } from '../domains/employee';
 import * as employeeModel from '../models/employee';
-import DataNotFoundError from '../errors/DataNotFoundError';
+import NotFoundError from '../errors/NotFoundError';
 
 /**
  * Fetch All Employees.
@@ -20,7 +20,7 @@ export async function fetchById(employeeId: number): Promise<Employee> {
   try {
     const [employee] = await employeeModel.fetch(employeeId);
     if (!employee) {
-      throw new DataNotFoundError('employee with this id not found.');
+      throw new NotFoundError('employee with this id not found.');
     }
 
     return employee;
@@ -36,7 +36,7 @@ export async function fetchByUserId(userId: number): Promise<Employee> {
   try {
     const [employee] = await employeeModel.fetchByUserId(userId);
     if (!employee) {
-      throw new DataNotFoundError('User with this id is not an Employee.');
+      throw new NotFoundError('User with this id is not an Employee.');
     }
 
     return employee;
@@ -52,7 +52,7 @@ export async function fetchByOfficeId(officeId: number): Promise<Employee[]> {
   try {
     const employees = await employeeModel.fetchByOfficeId(officeId);
     if (!employees || employees.length <= 0) {
-      throw new DataNotFoundError('Office with this id is not an Office.');
+      throw new NotFoundError('Office with this id is not an Office.');
     }
 
     return employees;

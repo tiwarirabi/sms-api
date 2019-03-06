@@ -47,9 +47,14 @@ export async function fetchById(
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function save(req: Request, res: Response, next: NextFunction) {
+export async function save(req: any, res: Response, next: NextFunction) {
   try {
-    const category = await categoryService.save(req.body);
+    const { body } = req;
+
+    const category = await categoryService.save({
+      ...body,
+      createdBy: req.user.id
+    });
 
     res.json(category);
   } catch (error) {
