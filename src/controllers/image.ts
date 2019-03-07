@@ -8,7 +8,7 @@ import config from '../config/config';
  * @param {NextFunction} next
  */
 export async function upload(req: any, res: Response, next: NextFunction) {
-  const filePath = req.files.file.path.replace('src/uploads/', '');
+  const filePath = req.files.file.path.replace(config.app.uploadDir, '');
 
   const fullPath = `http://${config.app.host}:${
     config.app.port
