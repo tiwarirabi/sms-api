@@ -1,6 +1,6 @@
 import * as nodemailer from "nodemailer";
 
-export async function sendMail(to, subject, body) {
+export async function sendMail(from: string, to: string, subject: string, body: string) {
   const account = await nodemailer.createTestAccount();
 
   const transporter = nodemailer.createTransport({
@@ -12,8 +12,6 @@ export async function sendMail(to, subject, body) {
       pass: account.pass,
     },
   });
-
-  const from = '"3jhakri.com" <auth@3jhakri.com>';
 
   const mailOptions = {
     to,
