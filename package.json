@@ -46,6 +46,7 @@
   "dependencies": {
     "@types/express-formidable": "^1.0.3",
     "@types/jsonwebtoken": "^8.3.0",
+    "@types/nodemailer": "^4.6.6",
     "body-parser": "^1.18.3",
     "camelize": "^1.0.0",
     "cors": "^2.8.5",
@@ -62,6 +63,7 @@
     "lodash": "^4.17.11",
     "morgan": "^1.9.1",
     "mysql2": "^1.6.4",
+    "nodemailer": "^5.1.1",
     "ts-node": "^7.0.1",
     "winston": "^3.1.0",
     "winston-daily-rotate-file": "^3.5.1"
