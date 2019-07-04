@@ -4,8 +4,7 @@ import * as smsService from '../services/sms';
 import BadRequestError from '../errors/BadRequestError';
 
 import senderIds from '../constants/constants';
-import { isNTC } from 'src/utils/guessPhoneNumber';
-import { isNCELL } from 'src/utils/guessPhoneNumber';
+import { isNTC, isNCELL } from '../utils/guessPhoneNumber';
 
 export const sms = async (req: Request, res: Response, next: NextFunction) => {
     const {
