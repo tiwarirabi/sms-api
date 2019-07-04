@@ -27,12 +27,3 @@ $ yarn start
 Navigate to http://localhost:8080/info to verify installation.
 
 
-## REQUEST PAYLOAD
-
-# Request data
-Note: It's the object that you'll need to create a jwt.
-
-
-{
-
-}
