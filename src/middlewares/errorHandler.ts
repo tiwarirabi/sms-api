@@ -1,7 +1,6 @@
 import * as HttpStatus from 'http-status-codes';
 import { Request, Response, NextFunction } from 'express';
 
-import logger from '../utils/logger';
 import { buildError } from '../utils/error';
 
 // import AuthError from '../errors/AuthError';
@@ -69,7 +68,6 @@ export function bodyParser(
   res: Response,
   next: NextFunction
 ) {
-  logger.error(err.message);
 
   res.status(err.status).json({
     error: {
@@ -93,10 +91,9 @@ export function genericErrorHandler(
   res: Response,
   next: NextFunction
 ) {
-  logger.error(err.message);
-  logger.debug(err.stack);
 
   const error = buildError(err);
-
+  //TODO: mail the admin on any error's with the error details.
+  
   res.status(error.code).json({ error });
 }
