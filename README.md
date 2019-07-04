@@ -20,7 +20,7 @@ $ yarn install
 
 Make a copy of `.env.example` as `.env` and set the required variables.
 
-# Start the spi
+# Start the api
 
 $ yarn start
 
