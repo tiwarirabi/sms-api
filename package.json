@@ -1,7 +1,7 @@
 {
-  "name": "easydigital-sms-api",
+  "name": "sms-api",
   "version": "0.0.1",
-  "description": "easydigital.com.np's sms api in one request form.",
+  "description": "SMS API",
   "scripts": {
     "precommit": "lint-staged",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,js}'; exit 0",

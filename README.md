@@ -1,6 +1,6 @@
-### easydigital-sms-api
+### sms-api
 
-easydigital.com.np's sms api in one request form.
+sms api.
 
 ## Installation
 
@@ -11,19 +11,14 @@ easydigital.com.np's sms api in one request form.
 - [NPM](https://docs.npmjs.com/getting-started/installing-node) - 5.5.1 or above
 
 Clone the repository, install the dependencies and get started right away.
-
-$ git clone https://github.com/tiwarirabi/easydigital-sms-api.git
-$ cd easydigital-sms-api
+```
+$ git clone https://github.com/tiwarirabi/sms-api.git
+$ cd sms-api
 $ yarn install
-
-# .env
-
-Make a copy of `.env.example` as `.env` and set the required variables.
+```
 
 # Start the api
-
+```
 $ yarn start
-
-Navigate to http://localhost:8080/info to verify installation.
-
-
+```
+Navigate to http://localhost:8090/info to verify installation.
