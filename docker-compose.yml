@@ -1,0 +1,9 @@
+version: "2"
+services:
+  api:
+    build: .
+    image: sms_dev_api:latest
+    container_name: sms_dev_api
+    restart: always
+    ports:
+      - 8090:8090
